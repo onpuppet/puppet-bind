@@ -1,4 +1,4 @@
-define dns::zone (
+define bind::zone (
   $soa = "${::fqdn}.",
   $soa_email = "root.${::fqdn}.",
   $zone_ttl = '604800',
