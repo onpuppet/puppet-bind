@@ -1,0 +1,21 @@
+{
+  "author": "",
+  "checksums": {
+    "Rakefile": "f37e6131fe7de9a49b09d31596f5fbf1",
+    "manifests/init.pp": "c587032c4db664685378de7bb808c1a0",
+    "Modulefile": "8875a1bee41a5fabb216d0ce66bda688",
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "tests/init.pp": "35325ea3d13bde4e92ca9e983c68215c",
+    "spec/spec_helper.rb": "3ea886dd135e120afa31e0aab12e85b0",
+    "README.markdown": "d3f38583286ca05f1fb1e7f37c613d23"
+  },
+  "dependencies": [],
+  "description": "",
+  "license": "",
+  "name": "daniel-bind",
+  "project_page": "",
+  "source": "",
+  "summary": "",
+  "types": [],
+  "version": "0.1.0"
+}
