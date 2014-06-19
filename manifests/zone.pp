@@ -15,10 +15,27 @@ define bind::zone (
   $allow_update = undef,
   $slave_masters = undef,
   $zone_notify = false,
-  $ensure = present
+  $ensure = present,
+  $owner = 'root',
+  $group = undef,
 ) {
 
   $cfg_dir = '/etc/bind'
+
+  file { "${cfg_dir}/zones":
+    ensure => directory,
+    owner  => $owner,
+    group  => $group,
+    mode   => '0755',
+  }
+
+  concat { "${cfg_dir}/named.conf.local":
+    owner   => $owner,
+    group   => $group,
+    mode    => '0644',
+    require => Class['concat::setup'],
+    notify  => Class['bind::service']
+  }
 
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
@@ -50,7 +67,7 @@ define bind::zone (
       owner   => 'bind',
       group   => 'bind',
       mode    => '0644',
-      require => [Class['concat::setup'], Class['dns::server']],
+      require => [Class['concat::setup'], Class['bind::server']],
       notify  => Exec["bump-${zone}-serial"]
     }
     concat::fragment{"db.${name}.soa":
@@ -70,8 +87,8 @@ define bind::zone (
       provider    => posix,
       user        => 'bind',
       group       => 'bind',
-      require     => Class['dns::server::install'],
-      notify      => Class['dns::server::service'],
+      require     => Class['bind::package'],
+      notify      => Class['bind::service'],
     }
   }
 
