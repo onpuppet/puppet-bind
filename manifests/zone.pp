@@ -37,15 +37,32 @@ define bind::zone (
     notify  => Class['bind::service']
   }
 
+  concat { "${cfg_dir}/named.conf.local":
+    owner   => $owner,
+    group   => $group,
+    mode    => '0644',
+    require => Class['concat::setup'],
+    notify  => Class['dns::server::service']
+  }
+
+  concat::fragment{'named.conf.local.header':
+    ensure  => present,
+    target  => "${cfg_dir}/named.conf.local",
+    order   => 1,
+    content => "// File managed by Puppet.\n"
+  }
+
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
-#  if $dns::server::options::forwarder and $allow_forwarder {
-#    fatal("You cannot specify a global forwarder and \
-#    a zone forwarder for zone ${soa}")
-#  }
-#  if !member(['first', 'only'], $forward_policy) {
-#    error('The forward policy can only be set to either first or only')
-#  }
+
+
+  if $bind::server::conf::forwarders and $allow_forwarder {
+    fatal("You cannot specify a global forwarder and \
+    a zone forwarder for zone ${soa}")
+  }
+  if !member(['first', 'only'], $forward_policy) {
+    error('The forward policy can only be set to either first or only')
+  }
 
   $zone = $reverse ? {
     true    => "${name}.in-addr.arpa",
