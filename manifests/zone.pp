@@ -12,7 +12,7 @@ define bind::zone (
   $allow_transfer = [],
   $allow_forwarder = [],
   $forward_policy = 'first',
-  $allow_update = undef,
+  $allow_update = 'none',
   $slave_masters = undef,
   $zone_notify = false,
   $ensure = present,
@@ -67,7 +67,7 @@ define bind::zone (
       owner   => 'bind',
       group   => 'bind',
       mode    => '0644',
-      require => [Class['concat::setup'], Class['bind::server']],
+      require => [Class['concat::setup'], Class['bind']],
       notify  => Exec["bump-${zone}-serial"]
     }
     concat::fragment{"db.${name}.soa":
