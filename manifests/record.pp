@@ -13,7 +13,7 @@ define bind::record (
   $order = 9
 ) {
 
-  $cfg_dir = $bind::server::conf::directory
+  $cfg_dir = "/etc/bind"
 
   $zone_file_stage = "${cfg_dir}/zones/db.${zone}.stage"
 
