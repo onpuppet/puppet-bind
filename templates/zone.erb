@@ -25,7 +25,7 @@ zone "<%= @zone %>" {
 <% end -%>
 <% end -%>
 <% if @allow_update -%>
-  allow-update {keys "<%= @allow_update %>";};
+  allow-update { key "<%= @allow_update %>"; };
 <% end -%>
 
 };
