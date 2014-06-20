@@ -115,5 +115,27 @@ define bind::server::conf (
     content => template('bind/named.conf.erb'),
   }
 
+  file { "${directory}/zones":
+    ensure => directory,
+    owner  => 'bind',
+    group  => 'bind',
+    mode   => '0755',
+  }
+
+  concat { "${directory}/named.conf.local":
+    owner   => 'bind',
+    group   => 'bind',
+    mode    => '0644',
+    require => Class['concat::setup'],
+    notify  => Class['bind::service']
+  }
+
+  concat::fragment{'named.conf.local.header':
+    ensure  => present,
+    target  => "${directory}/named.conf.local",
+    order   => 1,
+    content => "// File managed by Puppet.\n"
+  }
+
 }
 
