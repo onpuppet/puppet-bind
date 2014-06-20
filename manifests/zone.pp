@@ -34,7 +34,7 @@ define bind::zone (
     group   => $group,
     mode    => '0644',
     require => Class['concat::setup'],
-    notify  => Class['dns::server::service']
+    notify  => Class['bind::service']
   }
 
   concat::fragment{'named.conf.local.header':
