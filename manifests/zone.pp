@@ -16,22 +16,20 @@ define bind::zone (
   $slave_masters = undef,
   $zone_notify = false,
   $ensure = present,
-  $owner = 'root',
-  $group = undef,
 ) {
 
   $cfg_dir = '/etc/bind'
 
   file { "${cfg_dir}/zones":
     ensure => directory,
-    owner  => $owner,
-    group  => $group,
+    owner  => 'bind',
+    group  => 'bind',
     mode   => '0755',
   }
 
   concat { "${cfg_dir}/named.conf.local":
-    owner   => $owner,
-    group   => $group,
+    owner   => 'bind',
+    group   => 'bind',
     mode    => '0644',
     require => Class['concat::setup'],
     notify  => Class['bind::service']
