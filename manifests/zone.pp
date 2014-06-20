@@ -18,7 +18,7 @@ define bind::zone (
   $ensure = present,
 ) {
 
-  $cfg_dir = '/etc/bind'
+  $cfg_dir = $bind::server::conf::directory
 
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
