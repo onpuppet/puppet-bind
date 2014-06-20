@@ -24,10 +24,8 @@ zone "<%= @zone %>" {
   };
 <% end -%>
 <% end -%>
-<% if @allow_update == 'none' -%>
-  allow-update {none;};
-<% else -%>
-  allow-update {keys "<%= @allow_udate %>";};
+<% if @allow_update -%>
+  allow-update {keys "<%= @allow_update %>";};
 <% end -%>
 
 };
