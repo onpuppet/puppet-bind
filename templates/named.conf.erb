@@ -144,11 +144,11 @@ view "<%= key %>" {
 <% end -%>
 <% else -%><%# end views, start no views -%>
 
-<% if @recursion == 'yes' -%>
-zone "." IN {
-    type hint;
-    file "named.ca";
-};
+//<% if @recursion == 'yes' -%>
+//zone "." IN {
+//    type hint;
+//    file "named.ca";
+//};
 
 <% end -%>
 <% if !@zones.empty? -%>
