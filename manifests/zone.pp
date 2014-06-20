@@ -20,28 +20,6 @@ define bind::zone (
 
   $cfg_dir = '/etc/bind'
 
-  file { "${cfg_dir}/zones":
-    ensure => directory,
-    owner  => 'bind',
-    group  => 'bind',
-    mode   => '0755',
-  }
-
-  concat { "${cfg_dir}/named.conf.local":
-    owner   => 'bind',
-    group   => 'bind',
-    mode    => '0644',
-    require => Class['concat::setup'],
-    notify  => Class['bind::service']
-  }
-
-  concat::fragment{'named.conf.local.header':
-    ensure  => present,
-    target  => "${cfg_dir}/named.conf.local",
-    order   => 1,
-    content => "// File managed by Puppet.\n"
-  }
-
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
 
