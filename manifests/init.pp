@@ -60,10 +60,10 @@ class bind (
   }
 
   file { "${config_dir}/zones":
-    ensure => directory,
+    ensure  => directory,
     owner   => $config_file_owner,
     group   => $config_file_group,
-    mode   => '0755',
+    mode    => '0755',
   }
 
   concat { "${config_dir}/named.conf.local":
