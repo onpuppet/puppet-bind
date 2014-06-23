@@ -13,9 +13,7 @@ define bind::record (
   $order = 9
 ) {
 
-  $cfg_dir = "/etc/bind"
-
-  $zone_file_stage = "${cfg_dir}/zones/db.${zone}.stage"
+  $zone_file_stage = "${::bind::config_dir}/zones/db.${zone}.stage"
 
   concat::fragment{"db.${zone}.${name}.record":
     target  => $zone_file_stage,

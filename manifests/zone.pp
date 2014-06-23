@@ -18,18 +18,16 @@ define bind::zone (
   $ensure = present,
 ) {
 
-  $cfg_dir = "/etc/bind"
-
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
 
 
-  if $bind::server::conf::forwarders and $allow_forwarder {
-    fatal("You cannot specify a global forwarder and \
+  if $bind::forwarders and $allow_forwarder {
+    fail("You cannot specify a global forwarder and \
     a zone forwarder for zone ${soa}")
   }
   if !member(['first', 'only'], $forward_policy) {
-    error('The forward policy can only be set to either first or only')
+    warning('The forward policy can only be set to either first or only')
   }
 
   $zone = $reverse ? {
@@ -37,7 +35,7 @@ define bind::zone (
     default => $name
   }
 
-  $zone_file = "${cfg_dir}/zones/db.${name}"
+  $zone_file = "${::bind::config_dir}/zones/db.${name}"
   $zone_file_stage = "${zone_file}.stage"
 
   if $ensure == absent {
@@ -49,8 +47,8 @@ define bind::zone (
 
     # Create "fake" zone file without zone-serial
     concat { $zone_file_stage:
-      owner   => 'bind',
-      group   => 'bind',
+      owner   => $::bind::config_file_owner,
+      group   => $::bind::config_file_group,
       mode    => '0644',
       require => [Class['concat::setup'], Class['bind']],
       notify  => Exec["bump-${zone}-serial"]
@@ -70,17 +68,17 @@ define bind::zone (
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,
-      user        => 'bind',
-      group       => 'bind',
-      require     => Class['bind::package'],
-      notify      => Class['bind::service'],
+      user        => $::bind::config_file_owner,
+      group       => $::bind::config_file_group,
+      require     => Package[$::bind::packagename],
+      notify      => Service[$::bind::servicename],
     }
   }
 
   # Include Zone in named.conf.local
   concat::fragment{"named.conf.local.${name}.include":
     ensure  => $ensure,
-    target  => "${cfg_dir}/named.conf.local",
+    target  => "${::bind::config_dir}/named.conf.local",
     order   => 3,
     content => template("${module_name}/zone.erb")
   }
