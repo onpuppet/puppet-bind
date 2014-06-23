@@ -103,6 +103,11 @@ logging {
         null;
     };
 };
+<% if !@controls.empty? -%>
+controls {
+         inet 127.0.0.1 port 953
+         allow {<% @controls.each do |ip| -%> <%= ip %>; <% end -%>} <% if @key -%>keys { "<%= @key %>"; };<% end -%>
+};
 <% if !@views.empty? -%>
 
 <% @views.sort_by {|key,value| key}.each do |key,value| -%>
@@ -143,12 +148,6 @@ view "<%= key %>" {
 };
 <% end -%>
 <% else -%><%# end views, start no views -%>
-
-//<% if @recursion == 'yes' -%>
-//zone "." IN {
-//    type hint;
-//    file "named.ca";
-//};
 
 <% end -%>
 <% if !@zones.empty? -%>
