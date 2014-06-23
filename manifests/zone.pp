@@ -10,7 +10,7 @@ define bind::zone (
   $reverse = false,
   $zone_type = 'master',
   $allow_transfer = [],
-  $allow_forwarder = false,
+  $allow_forwarder = [],
   $forward_policy = 'first',
   $allow_update = false,
   $slave_masters = undef,
@@ -22,12 +22,12 @@ define bind::zone (
   validate_array($allow_forwarder)
 
 
-  if $::bind::forwarders and $allow_forwarder {
+  if !empty($::bind::forwarders) and !empty($allow_forwarder) {
     fail("You cannot specify a global forwarder and \
     a zone forwarder for zone ${soa}")
   }
   if !member(['first', 'only'], $forward_policy) {
-    warning('The forward policy can only be set to either first or only')
+    fail('The forward policy can only be set to either first or only')
   }
 
   $zone = $reverse ? {
