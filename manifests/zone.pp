@@ -10,7 +10,7 @@ define bind::zone (
   $reverse = false,
   $zone_type = 'master',
   $allow_transfer = [],
-  $allow_forwarder = [],
+  $allow_forwarder = false,
   $forward_policy = 'first',
   $allow_update = false,
   $slave_masters = undef,
@@ -22,7 +22,7 @@ define bind::zone (
   validate_array($allow_forwarder)
 
 
-  if $bind::forwarders and $allow_forwarder {
+  if $::bind::forwarders and $allow_forwarder {
     fail("You cannot specify a global forwarder and \
     a zone forwarder for zone ${soa}")
   }
