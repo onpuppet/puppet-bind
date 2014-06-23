@@ -48,12 +48,13 @@ class bind (
   $packagename            = $::bind::params::packagename,
   $bindlogdir             = $::bind::params::bindlogdir,
   $servicename            = $::bind::params::servicename,
+  $config_file            = $::bind::params::config_file,
   $config_file_owner      = $::bind::params::config_file_owner,
   $config_file_group      = $::bind::params::config_file_group,
 ) inherits ::bind::params {
   
   # Everything is inside a single template
-  file { $title:
+  file { $config_file:
     notify  => Service[$servicename],
     content => template('bind/named.conf.erb'),
   }
