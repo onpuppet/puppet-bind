@@ -10,7 +10,7 @@ class bind::params {
     default   => '/etc/bind',
   }
 
-  $config_dir = "$config_dir/named.conf"
+  $config_file = "$config_dir/named.conf"
 
   $config_file_owner = $::osfamily ? {
     'RedHat'  => 'root',

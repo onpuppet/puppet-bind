@@ -8,7 +8,7 @@
     "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
     "spec/spec_helper.rb": "447d455444cf2400408ac0593d98eeb2",
     "LICENSE": "99219472697a01561e7630d63aaecdc1",
-    "manifests/params.pp": "ce3cf253ddcf8ecd2d7a0b635410977b",
+    "manifests/params.pp": "138a326721d7241bdee4374490c7265a",
     ".metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml": "6b259799f38aa17b8cd8692f57c18b24",
     "files/named.empty": "825c08bd73c3b6a2c95f671477d69749",
     "manifests/init.pp": "f432d29ef19c8824d845d0875b72f915",
