@@ -10,11 +10,7 @@ class bind::params {
     default   => '/etc/bind',
   }
 
-  $directory = $::osfamily ? {
-    'RedHat'  => '/var/named',
-    'Debian'  => '/var/cache/named',
-    default   => '/var/named',
-  }
+  $directory = '/var/named'
 
   $config_file = "$config_dir/named.conf"
 
