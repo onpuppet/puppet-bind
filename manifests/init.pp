@@ -24,6 +24,7 @@ class bind (
   $listen_on_v6_addr      = [ '::1' ],
   $forwarders             = [],
   $config_dir             = $::bind::params::config_dir,
+  $directory              = $::bind::params::directory,
   $managed_keys_directory = undef,
   $hostname               = undef,
   $server_id              = undef,
