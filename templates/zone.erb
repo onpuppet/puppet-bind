@@ -5,7 +5,7 @@ zone "<%= @zone %>" {
 <% end -%>
   file "<%= @zone_file %>";
 <% if @zone_type == 'slave' -%>
-  masters {<% @slave_master.each do |ip| -%> <%= ip %>; <% end -%>};
+  masters {<% @slave_masters.each do |ip| -%> <%= ip %>; <% end -%>};
 <% elsif @zone_type == 'master' -%>
 <% if @allow_transfer -%>
   allow-transfer {<% @allow_transfer.each do |ip| -%> <%= ip %>; <% end -%>}; 

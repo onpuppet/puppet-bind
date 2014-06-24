@@ -38,7 +38,7 @@
     "tests/init.pp": "35325ea3d13bde4e92ca9e983c68215c",
     "README.markdown": "d3f38583286ca05f1fb1e7f37c613d23",
     ".metadata/.plugins/org.eclipse.ui.workbench/workbench.xml": "1f23c014647c9b0a3975e4c2f495dc4e",
-    "templates/zone.erb": "6727cc53d88cea409b9306255e8d23fe",
+    "templates/zone.erb": "046b05e0f64c5dd0001485a9242a8dc4",
     "templates/zone_file.erb": "d8564255f563d46481295fee73716940",
     ".metadata/.plugins/org.eclipse.ui.intro/dialog_settings.xml": "2db4564280df650d9cef4e7e3e3e223e",
     "manifests/record/a.pp": "7abb5bad478a505dac952ea765ada93c",
