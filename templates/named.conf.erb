@@ -104,6 +104,14 @@ logging {
     };
 };
 
+<% if !@controls.empty? -%>
+controls {
+         inet 127.0.0.1 port 953
+         allow {<% @controls.each do |ip| -%> <%= ip %>; <% end -%>} 
+         keys { <% if @key -%>"<%= @key %>"; <% else -%> "rndc-key"; <% end -%>};
+};
+<% end -%>
+
 <% if !@views.empty? -%>
 
 <% @views.sort_by {|key,value| key}.each do |key,value| -%>
@@ -145,7 +153,6 @@ view "<%= key %>" {
 <% end -%>
 <% else -%><%# end views, start no views -%>
 
-<% end -%>
 <% if !@zones.empty? -%>
 <% @zones.sort_by {|key, value| key}.each do |key,value| -%>
 zone "<%= key %>" IN {
