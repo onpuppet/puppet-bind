@@ -54,6 +54,8 @@ class bind (
   $config_file_group      = $::bind::params::config_file_group,
   $key                    = undef,
   $controls               = [],
+  $inet                   = '127.0.0.1',
+  $inet_port              = '953',
 ) inherits ::bind::params {
   
   # Everything is inside a single template

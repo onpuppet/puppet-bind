@@ -106,9 +106,10 @@ logging {
 
 <% if !@controls.empty? -%>
 controls {
-         inet 127.0.0.1 port 953
+         inet <%= @inet %> port <%= @inet_port %>
          allow {<% @controls.each do |ip| -%> <%= ip %>; <% end -%>} 
-         keys { <% if @key -%>"<%= @key %>"; <% else -%> "rndc-key"; <% end -%>};
+         keys  { <% if @key -%>"<%= @key %>"; <% else -%> "rndc-key"; <% end -%>
+    };
 };
 <% end -%>
 
