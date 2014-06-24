@@ -57,6 +57,7 @@ class bind (
   $inet                   = '127.0.0.1',
   $inet_port              = '953',
   $bindkey_file           = $::bind::params::binkey_file,
+  $allow_notify           = undef,
 ) inherits ::bind::params {
   
   # Everything is inside a single template
