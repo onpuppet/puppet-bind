@@ -56,6 +56,7 @@ class bind (
   $controls               = [],
   $inet                   = '127.0.0.1',
   $inet_port              = '953',
+  $bindkey_file           = $::bind::params::binkey_file,
 ) inherits ::bind::params {
   
   # Everything is inside a single template

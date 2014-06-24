@@ -85,7 +85,7 @@ options {
     dnssec-lookaside <%= @dnssec_lookaside %>;
 
     /* Path to ISC DLV key */
-    bindkeys-file "/etc/named.iscdlv.key";
+    bindkeys-file "<%= @bindkey_file %>";
 };
 
 logging {
@@ -108,7 +108,7 @@ logging {
 controls {
          inet <%= @inet %> port <%= @inet_port %>
          allow {<% @controls.each do |ip| -%> <%= ip %>; <% end -%>} 
-         keys  { <% if @key -%>"<%= @key %>"; <% else -%> "rndc-key"; <% end -%>
+         keys  { <% if @key -%>"<%= @key %>"; <% else -%>"rndc-key";<% end -%>
     };
 };
 <% end -%>
