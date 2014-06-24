@@ -68,8 +68,8 @@ options {
 <% if !@allow_transfer.empty? -%>
     allow-transfer { <%= @allow_transfer.join("; ") %>; };
 <% end -%>
-<% if @allow_notify -%>
-    allow-notify { "<%= @allow_notify %>"; };
+<% if !@allow_notify.empty? -%>
+    allow-notify {<% @allow_notify.each do |ip| -%> "<%= ip %>";<% end -%> };
 <% end -%>
 <% if !@check_names.empty? -%>
 <% @check_names.each do |line| -%>
