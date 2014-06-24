@@ -23,7 +23,7 @@
     "spec/defines/bind_server_file_spec.rb": "ae8f4bc408c691f1f26c0b1e34041ddd",
     "spec/defines/bind_server_conf_spec.rb": "75867c71d150c421330148d15b8096d4",
     "manifests/record.pp": "f7e098874aa3829e19ca786bc2fb6281",
-    "templates/named.conf.erb": "4cb20285da0494ee4c22bc71d2481cf7",
+    "templates/named.conf.erb": "4f9434901cd8addf9bf697d9dcada987",
     ".metadata/.plugins/org.eclipse.jdt.core/invalidArchivesCache": "f1d3ff8443297732862df21dc4e57262",
     ".metadata/.plugins/org.eclipse.equinox.p2.ui/dialog_settings.xml": "cf85aa86c40c2f16d90fca0daaee4aa7",
     "templates/zone_record.erb": "285e12b645beace9d789bc7307a0398c",
