@@ -52,7 +52,7 @@ class bind (
   $config_file            = $::bind::params::config_file,
   $config_file_owner      = $::bind::params::config_file_owner,
   $config_file_group      = $::bind::params::config_file_group,
-  $key                    = "rndc-key",
+  $key                    = undef,
   $controls               = [],
 ) inherits ::bind::params {
   
