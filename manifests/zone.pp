@@ -13,7 +13,7 @@ define bind::zone (
   $allow_forwarder = [],
   $forward_policy = 'first',
   $allow_update = false,
-  $slave_masters = undef,
+  $slave_masters = [],
   $zone_notify = false,
   $ensure = present,
 ) {
