@@ -19,9 +19,9 @@ class bind (
   $acls                   = {},
   $masters                = {},
   $listen_on_port         = '53',
-  $listen_on_addr         = [ '127.0.0.1' ],
+  $listen_on_addr         = ['127.0.0.1'],
   $listen_on_v6_port      = '53',
-  $listen_on_v6_addr      = [ '::1' ],
+  $listen_on_v6_addr      = ['::1'],
   $forwarders             = [],
   $config_dir             = $::bind::params::config_dir,
   $directory              = $::bind::params::directory,
@@ -32,7 +32,7 @@ class bind (
   $dump_file              = '/var/named/data/cache_dump.db',
   $statistics_file        = '/var/named/data/named_stats.txt',
   $memstatistics_file     = '/var/named/data/named_mem_stats.txt',
-  $allow_query            = [ 'localhost' ],
+  $allow_query            = ['localhost'],
   $allow_query_cache      = [],
   $recursion              = 'yes',
   $allow_recursion        = [],
@@ -58,8 +58,8 @@ class bind (
   $inet_port              = '953',
   $bindkey_file           = $::bind::params::binkey_file,
   $allow_notify           = [],
-) inherits ::bind::params {
-  
+  ) 
+inherits ::bind::params {
   # Everything is inside a single template
   file { $config_file:
     notify  => Service[$servicename],
@@ -67,10 +67,10 @@ class bind (
   }
 
   file { "${config_dir}/zones":
-    ensure  => directory,
-    owner   => $config_file_owner,
-    group   => $config_file_group,
-    mode    => '0755',
+    ensure => directory,
+    owner  => $config_file_owner,
+    group  => $config_file_group,
+    mode   => '0755',
   }
 
   concat { "${config_dir}/named.conf.local":
@@ -81,7 +81,7 @@ class bind (
     notify  => Service[$servicename],
   }
 
-  concat::fragment{'named.conf.local.header':
+  concat::fragment { 'named.conf.local.header':
     ensure  => present,
     target  => "${config_dir}/named.conf.local",
     order   => 1,
@@ -90,10 +90,10 @@ class bind (
 
   # Main package and service
 
-  
+
   package { "${packagename}": ensure => installed }
-  
-  service { $servicename :
+
+  service { $servicename:
     require    => Package[$packagename],
     hasstatus  => true,
     enable     => true,
