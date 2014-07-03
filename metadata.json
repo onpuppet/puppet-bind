@@ -1,9 +1,9 @@
 {
   "author": "Jon Skarpeteig, Daniel Sunde",
   "checksums": {
-    "spec/spec_helper_acceptance.rb": "1d37f223b7926b6069e470b46a8f9b51",
+    "spec/spec_helper_acceptance.rb": "5eb993d3d041024882bafa836c00b1a5",
     "spec/fixtures/manifests/site.pp": "d41d8cd98f00b204e9800998ecf8427e",
-    "spec/acceptance/standard_spec.rb": "725ffb75b81789e8dfbd3d61c6b7e351",
+    "spec/acceptance/standard_spec.rb": "5ccbe3cba17288ab80649a9ddc71ee94",
     "manifests/record/ptr.pp": "a0b7ae33fe9924e4e6c600ce479374a0",
     "spec/classes/bind_server_spec.rb": "6eb1f326c12e8d13336360058ba0d140",
     "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
@@ -15,12 +15,12 @@
     "manifests/zone.pp": "8410cf912cf09c217764ef2901c68d7c",
     "README.md": "a5ce50ddcdadb7bb16d865cd1ab54aaf",
     "Rakefile": "6d97c3421c556b8f18380413db273ad4",
-    "Gemfile": "de5dd6f751f12c242f89e47b753ac89a",
+    "Gemfile": "c04cef4b09fc6a27fff7a5070812b507",
     "spec/defines/bind_server_file_spec.rb": "ae8f4bc408c691f1f26c0b1e34041ddd",
     "spec/defines/bind_server_conf_spec.rb": "75867c71d150c421330148d15b8096d4",
     "manifests/record.pp": "f7e098874aa3829e19ca786bc2fb6281",
     "templates/named.conf.erb": "7f3d4a642c26e8bb04d0e763fdc7599c",
-    "spec/acceptance/nodesets/default.yml": "8b0c8ece9aa307dea2e6314d7927b305",
+    "spec/acceptance/nodesets/default.yml": "d75785b52e3f32e6297fb0cb2c487006",
     "build.xml": "2f19db9ec78c599751cc88293f4c39dc",
     "templates/zone_record.erb": "285e12b645beace9d789bc7307a0398c",
     "Modulefile": "1ed2572a645b34e92771e9bfbce3dcac",
@@ -28,7 +28,7 @@
     "templates/zone.erb": "046b05e0f64c5dd0001485a9242a8dc4",
     "templates/zone_file.erb": "d8564255f563d46481295fee73716940",
     "manifests/record/a.pp": "7abb5bad478a505dac952ea765ada93c",
-    "Gemfile.lock": "86f4083ab5345233a9cace2e5d662159"
+    "Gemfile.lock": "2cc7209122033b64e68e5b9e3b9c5aff"
   },
   "dependencies": [
     {

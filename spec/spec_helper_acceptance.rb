@@ -23,7 +23,7 @@ RSpec.configure do |c|
   # Configure all nodes in nodeset
   c.before :suite do
     # Install module and dependencies
-    puppet_module_install(:source => proj_root, :module_name => 'mysql')
+    puppet_module_install(:source => proj_root, :module_name => 'bind')
     hosts.each do |host|
       # Required for binding tests.
       if fact('osfamily') == 'RedHat'

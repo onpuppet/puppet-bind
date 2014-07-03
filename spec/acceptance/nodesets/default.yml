@@ -1,5 +1,9 @@
 HOSTS:
   ubuntu-12-04:
+    roles:
+     - master
+     - database
+     - dashboard
     platform: ubuntu-12.04-x64
     image: solarkennedy/ubuntu-12.04-puppet
     hypervisor: docker
