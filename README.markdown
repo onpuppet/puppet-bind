@@ -1,3 +1,0 @@
-# bind #
-
-This is the bind module. It provides...
