@@ -10,7 +10,7 @@
     "spec/spec_helper.rb": "447d455444cf2400408ac0593d98eeb2",
     "manifests/params.pp": "d8fb3f91808f67bef09bcc976a828c1e",
     "files/named.empty": "825c08bd73c3b6a2c95f671477d69749",
-    "manifests/init.pp": "2d7f975534f7d81923061ea4689c22be",
+    "manifests/init.pp": "e1a2dcc726080afcacedf71377e4b4ac",
     "spec/erb-lint.sh": "b2c4517c9e017c26c5f9f9952a9cb5e4",
     "manifests/zone.pp": "8410cf912cf09c217764ef2901c68d7c",
     "README.md": "a5ce50ddcdadb7bb16d865cd1ab54aaf",
