@@ -2,10 +2,10 @@ require 'rubygems'
 require 'rake'
 require 'bundler'
 require 'rspec/core/rake_task'
-
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
+require 'ci/reporter/rake/rspec'
 
 begin
   Bundler.setup(:default)
