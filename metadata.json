@@ -22,7 +22,7 @@
     "spec/defines/bind_server_conf_spec.rb": "75867c71d150c421330148d15b8096d4",
     "manifests/record.pp": "f7e098874aa3829e19ca786bc2fb6281",
     "templates/named.conf.erb": "7f3d4a642c26e8bb04d0e763fdc7599c",
-    "spec/acceptance/nodesets/default.yml": "e785574fd4cfc2add4a95e5463147dc6",
+    "spec/acceptance/nodesets/default.yml": "d75785b52e3f32e6297fb0cb2c487006",
     "build.xml": "2f19db9ec78c599751cc88293f4c39dc",
     "templates/zone_record.erb": "285e12b645beace9d789bc7307a0398c",
     "Modulefile": "1ed2572a645b34e92771e9bfbce3dcac",
