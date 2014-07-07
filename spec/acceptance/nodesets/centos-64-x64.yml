@@ -1,0 +1,10 @@
+HOSTS:
+  centos-65-x64:
+    roles:
+     - master
+    platform: el-6-x86_64
+    image: centos:6.4
+    hypervisor: docker
+    
+CONFIG:
+  type: foss
