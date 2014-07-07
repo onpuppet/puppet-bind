@@ -126,3 +126,4 @@ bind::server::conf {
 ## TESTING
 
     sudo apt-get install libxslt-dev
+    sudo usermod -G docker jenkins
