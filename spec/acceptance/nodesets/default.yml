@@ -8,7 +8,7 @@ HOSTS:
     image: ubuntu:12.04
     hypervisor: docker
     docker_image_commands: 
-      - 'sudo apt-get update -o Acquire::http::No-Cache=true -o Acquire::http::Pipeline-Depth=0' 
+      - 'apt-get update -o Acquire::http::No-Cache=true -o Acquire::http::Pipeline-Depth=0' 
     
 CONFIG:
   type: foss
