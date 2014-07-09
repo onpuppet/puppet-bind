@@ -5,8 +5,6 @@ HOSTS:
     platform: ubuntu-14.04-x64
     image: ubuntu:14.04
     hypervisor: docker
-    docker_image_commands: 
-      - 'apt-get update -o Acquire::http::No-Cache=true -o Acquire::http::Pipeline-Depth=0' 
     
 CONFIG:
   type: foss
