@@ -25,7 +25,7 @@ describe 'bind class' do
       service_provider = 'undef'
     when 'Ubuntu'
       package_name = 'bind9'
-      service_name = 'named'
+      service_name = 'bind9'
       service_provider = 'upstart'
     end
   end
