@@ -94,7 +94,8 @@ define bind::zone (
     ensure  => $ensure,
     target  => "${::bind::config_dir}/named.conf.local",
     order   => 3,
-    content => template("${module_name}/zone.erb")
+    content => template("${module_name}/zone.erb"),
+    require => Package[$::bind::packagename],
   }
 
 }

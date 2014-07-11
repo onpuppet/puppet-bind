@@ -21,7 +21,7 @@ class bind::params {
 
   $config_file_owner = $::osfamily ? {
     'RedHat'  => 'root',
-    'Debian'  => 'bind',
+    'Debian'  => 'root',
     'FreeBSD' => 'bind',
     default   => 'root',
   }

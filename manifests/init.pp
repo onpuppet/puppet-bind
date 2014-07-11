@@ -16,12 +16,8 @@
 #  }
 #
 class bind (
-  $acls                   = {
-  }
-  ,
-  $masters                = {
-  }
-  ,
+  $acls                   = {},
+  $masters                = {},
   $listen_on_port         = '53',
   $listen_on_addr         = ['127.0.0.1'],
   $listen_on_v6_port      = '53',
@@ -42,19 +38,13 @@ class bind (
   $allow_recursion        = [],
   $allow_transfer         = [],
   $check_names            = [],
-  $extra_options          = {
-  }
-  ,
+  $extra_options          = {},
   $dnssec_enable          = 'yes',
   $dnssec_validation      = 'yes',
   $dnssec_lookaside       = 'auto',
-  $zones                  = {
-  }
-  ,
+  $zones                  = {},
   $includes               = [],
-  $views                  = {
-  }
-  ,
+  $views                  = {},
   $service_reload         = true,
   $packagename            = $::bind::params::packagename,
   $bindlogdir             = $::bind::params::bindlogdir,
@@ -70,18 +60,25 @@ class bind (
   $allow_notify           = [],) inherits ::bind::params {
   # Everything is inside a single template
   file { $config_file:
-    notify  => Service[$servicename],
+    ensure  => present,
+    owner   => $config_file_owner,
+    group   => $config_file_group,
+    mode    => '0644',
     content => template('bind/named.conf.erb'),
+    notify  => Service[$servicename],
+    require => Package[$::bind::packagename],
   }
 
   file { "${config_dir}/zones":
-    ensure => directory,
-    owner  => $config_file_owner,
-    group  => $config_file_group,
-    mode   => '0755',
+    ensure  => directory,
+    owner   => $config_file_owner,
+    group   => $config_file_group,
+    mode    => '0755',
+    require => Package[$::bind::packagename],
   }
 
   concat { "${config_dir}/named.conf.local":
+    ensure  => present,
     owner   => $config_file_owner,
     group   => $config_file_group,
     mode    => '0644',
@@ -91,14 +88,16 @@ class bind (
 
   concat::fragment { 'named.conf.local.header':
     ensure  => present,
+    owner   => $config_file_owner,
+    group   => $config_file_group,
+    mode    => '0644',
     target  => "${config_dir}/named.conf.local",
     order   => 1,
-    content => "// File managed by Puppet.\n"
+    content => "// File managed by Puppet.\n",
+    require => Package[$::bind::packagename],
   }
 
   # Main package and service
-
-
   package { $packagename: ensure => installed }
 
   service { $servicename:
