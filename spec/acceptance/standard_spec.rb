@@ -26,6 +26,8 @@ describe 'bind class' do
       service_provider = 'undef'
     end
   when 'Debian'
+   case fact('operatingsystem')
+   when 'Debian'
     package_name = 'bind'
     service_name = 'named'
     service_provider = 'undef'
