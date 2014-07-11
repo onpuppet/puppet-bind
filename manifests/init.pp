@@ -78,7 +78,6 @@ class bind (
   }
 
   concat { "${config_dir}/named.conf.local":
-    ensure  => present,
     owner   => $config_file_owner,
     group   => $config_file_group,
     mode    => '0644',
