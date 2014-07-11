@@ -98,7 +98,7 @@ inherits ::bind::params {
     hasstatus  => true,
     enable     => true,
     ensure     => running,
-    restart    => "service ${servicename} reload",
+    restart    => "/sbin/service ${servicename} reload",
     hasrestart => true,
   }
 
