@@ -1,4 +1,4 @@
-# Define: bind::params
+# == Define: bind::zone
 #
 # Example usage:
 #
