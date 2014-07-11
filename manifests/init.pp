@@ -16,8 +16,12 @@
 #  }
 #
 class bind (
-  $acls                   = {},
-  $masters                = {},
+  $acls                   = {
+  }
+  ,
+  $masters                = {
+  }
+  ,
   $listen_on_port         = '53',
   $listen_on_addr         = ['127.0.0.1'],
   $listen_on_v6_port      = '53',
@@ -38,13 +42,19 @@ class bind (
   $allow_recursion        = [],
   $allow_transfer         = [],
   $check_names            = [],
-  $extra_options          = {},
+  $extra_options          = {
+  }
+  ,
   $dnssec_enable          = 'yes',
   $dnssec_validation      = 'yes',
   $dnssec_lookaside       = 'auto',
-  $zones                  = {},
+  $zones                  = {
+  }
+  ,
   $includes               = [],
-  $views                  = {},
+  $views                  = {
+  }
+  ,
   $service_reload         = true,
   $packagename            = $::bind::params::packagename,
   $bindlogdir             = $::bind::params::bindlogdir,
@@ -57,9 +67,7 @@ class bind (
   $inet                   = '127.0.0.1',
   $inet_port              = '953',
   $bindkey_file           = $::bind::params::binkey_file,
-  $allow_notify           = [],
-  )
-inherits ::bind::params {
+  $allow_notify           = [],) inherits ::bind::params {
   # Everything is inside a single template
   file { $config_file:
     notify  => Service[$servicename],
@@ -91,27 +99,27 @@ inherits ::bind::params {
   # Main package and service
 
 
-  package { "${packagename}": ensure => installed }
+  package { $packagename: ensure => installed }
 
   service { $servicename:
-    require    => Package[$packagename],
+    ensure     => running,
     hasstatus  => true,
     enable     => true,
-    ensure     => running,
     restart    => "/sbin/service ${servicename} reload",
     hasrestart => true,
+    require    => Package[$packagename],
   }
 
   # We want a nice log file which the package doesn't provide a location for
 
   file { $bindlogdir:
-    require => Package[$packagename],
     ensure  => directory,
     owner   => $config_file_owner,
     group   => $config_file_group,
     mode    => '0770',
     seltype => 'var_log_t',
     before  => Service[$servicename],
+    require => Package[$packagename],
   }
 
 }

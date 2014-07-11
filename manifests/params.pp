@@ -11,12 +11,12 @@ class bind::params {
   }
 
   $directory = '/var/named'
-  $config_file = "$config_dir/named.conf"
+  $config_file = "${config_dir}/named.conf"
 
   $binkey_file = $::osfamily ? {
-    'RedHat'  => '/etc/named.iscdlv.key',
-    'Debian'  => '/etc/bind/bind.keys',
-    default   => '/etc/bind/bind.keys',
+    'RedHat' => '/etc/named.iscdlv.key',
+    'Debian' => '/etc/bind/bind.keys',
+    default  => '/etc/bind/bind.keys',
   }
 
   $config_file_owner = $::osfamily ? {
@@ -46,6 +46,5 @@ class bind::params {
     'FreeBSD' => 'named',
     default   => 'named',
   }
- 
 }
 

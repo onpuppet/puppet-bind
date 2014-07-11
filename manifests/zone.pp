@@ -1,3 +1,17 @@
+# Define: bind::params
+#
+# Example usage:
+#
+# Forward zone file for master
+#
+#    bind::zone { 'example.com':
+#      soa            => 'ns1.example.com',
+#      soa_email      => 'noreply@example.com',
+#      nameservers    => ["ns1.example.com", "ns2.example.com"],
+#      allow_transfer => ['10.0.0.0/8'],
+#      zone_notify    => 'yes',
+#      allow_update   => $allow_update,
+#    }
 define bind::zone (
   $soa = "${::fqdn}.",
   $soa_email = "root.${::fqdn}.",
