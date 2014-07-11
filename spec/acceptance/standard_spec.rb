@@ -6,15 +6,13 @@ describe 'bind class' do
  case fact('osfamily')
   when 'RedHat'
     if fact('operatingsystemmajrelease') == '7'
-      package_name = 'mariadb-server'
-      service_name = 'mariadb'
+      package_name = 'named'
+      service_name = 'named'
       service_provider = 'undef'
-      mycnf = '/etc/my.cnf'
     else
-      package_name = 'mysql-server'
-      service_name = 'mysqld'
+      package_name = 'named'
+      service_name = 'named'
       service_provider = 'undef'
-      mycnf = '/etc/my.cnf'
     end
   when 'Suse'
     case fact('operatingsystem')
@@ -29,11 +27,11 @@ describe 'bind class' do
     end
   when 'Debian'
     package_name = 'bind'
-    service_name = 'bind'
+    service_name = 'named'
     service_provider = 'undef'
   when 'Ubuntu'
-    package_name = 'bind'
-    service_name = 'bind'
+    package_name = 'bind9'
+    service_name = 'named'
     service_provider = 'upstart'
   end
 
