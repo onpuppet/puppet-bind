@@ -11,9 +11,9 @@ class bind::params {
   }
 
   $directory = $::osfamily ? {
-    'Debian' => '/var/cache/bind', 
-    default => '/var/named' 
-  } 
+    'Debian' => '/var/cache/bind',
+    default => '/var/named'
+  }
 
   $config_file = "${config_dir}/named.conf"
 
