@@ -10,7 +10,11 @@ class bind::params {
     default   => '/etc/bind',
   }
 
-  $directory = '/var/named'
+  $directory = $::osfamily ? {
+    'Debian' => '/var/cache/bind', 
+    default => '/var/named' 
+  } 
+
   $config_file = "${config_dir}/named.conf"
 
   $binkey_file = $::osfamily ? {
