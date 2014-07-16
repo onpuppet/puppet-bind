@@ -81,7 +81,7 @@ class bind (
     owner   => $config_file_owner,
     group   => $config_file_group,
     mode    => '0644',
-    require => Class['concat::setup'],
+    require => [Package[$::bind::packagename], Class['concat::setup']],
     notify  => Service[$servicename],
   }
 
