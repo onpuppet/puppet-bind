@@ -9,7 +9,7 @@ HOSTS:
           - "sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config"
     ubuntu-server-1404-x64-slave:
         roles:
-         - master
+         - slave
         platform: ubuntu-14.04-x64
         image: ubuntu:14.04
         hypervisor: docker
