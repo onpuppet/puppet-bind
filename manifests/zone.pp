@@ -64,7 +64,7 @@ define bind::zone (
       owner   => $::bind::config_file_owner,
       group   => $::bind::config_file_group,
       mode    => '0644',
-      require => [Class['concat::setup'], Package[$::bind::packagename]],
+      require => [Class['concat::setup'], Package[$::bind::package]],
       notify  => Exec["bump-${zone}-serial"]
     }
     concat::fragment{"db.${name}.soa":
@@ -84,7 +84,7 @@ define bind::zone (
       provider    => posix,
       user        => $::bind::config_file_owner,
       group       => $::bind::config_file_group,
-      require     => Package[$::bind::packagename],
+      require     => Package[$::bind::package],
       notify      => Service[$::bind::servicename],
     }
   }
@@ -95,7 +95,7 @@ define bind::zone (
     target  => "${::bind::config_dir}/named.conf.local",
     order   => 3,
     content => template("${module_name}/zone.erb"),
-    require => Package[$::bind::packagename],
+    require => Package[$::bind::package],
   }
 
 }

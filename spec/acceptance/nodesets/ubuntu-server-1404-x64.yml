@@ -1,7 +1,7 @@
 HOSTS:
   ubuntu-server-1404-x64:
     roles:
-     - master
+     - default
     platform: ubuntu-14.04-x64
     image: ubuntu:14.04
     hypervisor: docker
