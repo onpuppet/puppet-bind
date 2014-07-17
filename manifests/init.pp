@@ -42,7 +42,6 @@ class bind (
   $dnssec_enable          = 'yes',
   $dnssec_validation      = 'yes',
   $dnssec_lookaside       = 'auto',
-  $zones                  = {},
   $includes               = [],
   $views                  = {},
   $service_reload         = true,

@@ -110,7 +110,7 @@ logging {
 <% if !@controls.empty? -%>
 controls {
          inet <%= @inet %> port <%= @inet_port %>
-         allow {<% @controls.each do |ip| -%><%= ip %>; <% end -%>} 
+         allow {<% @controls.each do |ip| -%><%= ip %>; <% end -%>}
          keys  { <% if @key -%>"<%= @key %>";<% else -%>"rndc-key";<% end -%> };
 };
 <% end -%>
@@ -128,28 +128,6 @@ view "<%= key %>" {
 <% if value['includes'] and !value['includes'].empty? -%>
 <% value['includes'].each do |filename| -%>
     include "<%= filename %>";
-<% end -%>
-<% end -%>
-<% if value['zones'] and !value['zones'].empty? -%>
-    /* View specific zones */
-<% value['zones'].sort_by {|key, value| key}.each do |key,value| -%>
-    zone "<%= key %>" IN {
-<% value.each do |line| -%>
-        <%= line %>;
-<% end -%>
-    };
-
-<% end -%>
-<% if !@zones.empty? -%>
-    /* Global zones */
-<% @zones.sort_by {|key, value| key}.each do |key,value| -%>
-    zone "<%= key %>" IN {
-<% value.each do |line| -%>
-        <%= line %>;
-<% end -%>
-    };
-
-<% end -%>
 <% end -%>
 <% end -%>
 };
