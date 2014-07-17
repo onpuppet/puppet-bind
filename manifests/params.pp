@@ -43,7 +43,7 @@ class bind::params {
     default   => 'named',
   }
 
-  $packagename = $::osfamily ? {
+  $package = $::osfamily ? {
     'RedHat'  => 'bind',
     'Debian'  => 'bind9',
     'FreeBSD' => 'bind910',
