@@ -14,10 +14,6 @@ unless ENV['RS_PROVISION'] == 'no' or ENV['BEAKER_provision'] == 'no'
 end
 
 RSpec.configure do |c|
-  
-  
-  c.include 'beaker/host'
-  
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 

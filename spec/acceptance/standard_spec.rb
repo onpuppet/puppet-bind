@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'bind class' do
+describe 'bind' do
 
   case fact('osfamily')
   when 'RedHat'
