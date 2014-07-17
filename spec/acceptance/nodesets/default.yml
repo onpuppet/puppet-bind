@@ -1,15 +1,7 @@
 HOSTS:
-    ubuntu-server-1404-x64-master:
+    ubuntu-server-1404-x64:
         roles:
          - master
-        platform: ubuntu-14.04-x64
-        image: ubuntu:14.04
-        hypervisor: docker
-        docker_image_commands: 
-          - "sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config"
-    ubuntu-server-1404-x64-slave:
-        roles:
-         - slave
         platform: ubuntu-14.04-x64
         image: ubuntu:14.04
         hypervisor: docker
