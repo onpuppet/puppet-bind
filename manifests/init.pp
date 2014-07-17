@@ -5,19 +5,23 @@
 # Parameters:
 #  $chroot:
 #   Enable chroot for the server. Default: false
-#  $packagenameprefix:
+#  $packageprefix:
 #   Package prefix name. Default: 'bind' or 'bind9' depending on the OS
 #
 # Sample Usage :
 #  include bind
 #  class { 'bind':
 #    chroot            => true,
-#    packagenameprefix => 'bind97',
+#    packageprefix => 'bind97',
 #  }
 #
 class bind (
-  $acls                   = {},
-  $masters                = {},
+  $acls                   = {
+  }
+  ,
+  $masters                = {
+  }
+  ,
   $listen_on_port         = '53',
   $listen_on_addr         = ['127.0.0.1'],
   $listen_on_v6_port      = '53',
@@ -38,18 +42,27 @@ class bind (
   $allow_recursion        = [],
   $allow_transfer         = [],
   $check_names            = [],
-  $extra_options          = {},
+  $extra_options          = {
+  }
+  ,
   $dnssec_enable          = 'yes',
   $dnssec_validation      = 'yes',
   $dnssec_lookaside       = 'auto',
-  $zones                  = {},
+  $zones                  = {
+  }
+  ,
   $includes               = [],
-  $views                  = {},
+  $views                  = {
+  }
+  ,
   $service_reload         = true,
-  $packagename            = $::bind::params::packagename,
+  $package                = $::bind::params::package,
   $bindlogdir             = $::bind::params::bindlogdir,
   $servicename            = $::bind::params::servicename,
+  $source                 = $::bind::params::source,
+  $template               = $::bind::params::template,
   $config_file            = $::bind::params::config_file,
+  $config_file_mode       = $::bind::params::config_file_mode,
   $config_file_owner      = $::bind::params::config_file_owner,
   $config_file_group      = $::bind::params::config_file_group,
   $key                    = undef,
@@ -58,66 +71,80 @@ class bind (
   $inet_port              = '953',
   $bindkey_file           = $::bind::params::binkey_file,
   $allow_notify           = [],) inherits ::bind::params {
-  # Everything is inside a single template
-  file { $config_file:
+  if ($::bind::source and $::bind::template) {
+    fail('Bind: cannot set both source and template')
+  }
+
+  $manage_file_source = $::bind::source ? {
+    ''      => undef,
+    default => $::bind::source,
+  }
+
+  $manage_file_content = $::bind::template ? {
+    ''      => undef,
+    default => template($::bind::template),
+  }
+
+  file { $::bind::config_file:
     ensure  => present,
-    owner   => $config_file_owner,
-    group   => $config_file_group,
-    mode    => '0644',
-    content => template('bind/named.conf.erb'),
-    notify  => Service[$servicename],
-    require => Package[$::bind::packagename],
+    owner   => $::bind::config_file_owner,
+    group   => $::bind::config_file_group,
+    mode    => $::bind::config_file_mode,
+    source  => $::bind::manage_file_source,
+    content => $::bind::manage_file_content,
+    notify  => Service[$::bind::servicename],
+    require => Package[$::bind::package],
   }
 
-  file { "${config_dir}/zones":
+  file { "${::bind::config_dir}/zones":
     ensure  => directory,
-    owner   => $config_file_owner,
-    group   => $config_file_group,
+    owner   => $::bind::config_file_owner,
+    group   => $::bind::config_file_group,
     mode    => '0755',
-    require => Package[$::bind::packagename],
+    require => Package[$::bind::package],
   }
 
-  concat { "${config_dir}/named.conf.local":
-    owner   => $config_file_owner,
-    group   => $config_file_group,
+  concat { "${::bind::config_dir}/named.conf.local":
+    owner   => $::bind::config_file_owner,
+    group   => $::bind::config_file_group,
     mode    => '0644',
-    require => [Package[$::bind::packagename], Class['concat::setup']],
-    notify  => Service[$servicename],
+    require => [Package[$::bind::package], Class['concat::setup']],
+    notify  => Service[$::bind::servicename],
   }
 
   concat::fragment { 'named.conf.local.header':
     ensure  => present,
-    owner   => $config_file_owner,
-    group   => $config_file_group,
+    owner   => $::bind::config_file_owner,
+    group   => $::bind::config_file_group,
     mode    => '0644',
-    target  => "${config_dir}/named.conf.local",
+    target  => "${::bind::config_dir}/named.conf.local",
     order   => 1,
     content => "// File managed by Puppet.\n",
-    require => Package[$::bind::packagename],
+    require => Package[$::bind::package],
   }
 
   # Main package and service
-  package { $packagename: ensure => installed }
+  package { $::bind::package: ensure => 'present' }
 
-  service { $servicename:
+  service { $::bind::servicename:
     ensure     => running,
     hasstatus  => true,
     enable     => true,
-    restart    => "/sbin/service ${servicename} reload",
+    restart    => "/sbin/service ${::bind::servicename} reload",
     hasrestart => true,
-    require    => Package[$packagename],
+    require    => Package[$::bind::package],
   }
 
   # We want a nice log file which the package doesn't provide a location for
 
-  file { $bindlogdir:
+  file { $::bind::bindlogdir:
     ensure  => directory,
-    owner   => $config_file_owner,
-    group   => $config_file_group,
+    owner   => $::bind::config_file_owner,
+    group   => $::bind::config_file_group,
     mode    => '0770',
     seltype => 'var_log_t',
-    before  => Service[$servicename],
-    require => Package[$packagename],
+    before  => Service[$::bind::servicename],
+    require => Package[$::bind::package],
   }
 
 }

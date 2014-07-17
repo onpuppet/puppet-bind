@@ -15,6 +15,10 @@ class bind::params {
     default => '/var/named'
   }
 
+  $source = ''
+
+  $template = 'bind/named.conf.erb'
+
   $config_file = "${config_dir}/named.conf"
 
   $binkey_file = $::osfamily ? {
@@ -22,6 +26,8 @@ class bind::params {
     'Debian' => '/etc/bind/bind.keys',
     default  => '/etc/bind/bind.keys',
   }
+
+  $config_file_mode = '0644'
 
   $config_file_owner = $::osfamily ? {
     'RedHat'  => 'root',
