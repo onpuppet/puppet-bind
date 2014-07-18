@@ -94,7 +94,7 @@ options {
 logging {
     channel main_log {
         file "/var/log/named/named.log" versions 3 size 5m;
-        severity <%= @loglevel %>;
+        severity <%= @log_level %>;
         print-time yes;
         print-severity yes;
         print-category yes;
