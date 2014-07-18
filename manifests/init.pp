@@ -33,6 +33,7 @@ class bind (
   $hostname               = undef,
   $server_id              = undef,
   $version                = undef,
+  $loglevel               = 'info',
   $dump_file              = '/var/named/data/cache_dump.db',
   $statistics_file        = '/var/named/data/named_stats.txt',
   $memstatistics_file     = '/var/named/data/named_mem_stats.txt',
