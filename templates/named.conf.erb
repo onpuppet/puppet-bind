@@ -99,8 +99,18 @@ logging {
         print-severity yes;
         print-category yes;
     };
+    channel query_log {
+        file "/var/log/named/query.log" versions 3 size 5m;
+        severity <%= @log_level %>;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
     category default{
         main_log;
+    };
+    category queries{
+        query_log;
     };
     category lame-servers {
         null;
