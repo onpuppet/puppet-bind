@@ -5,6 +5,10 @@ HOSTS:
     platform: ubuntu-14.04-x64
     image: ubuntu:14.04
     hypervisor: docker
+    docker_image_commands: 
+      - "sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config"
+      - "sed -i '1s/^/deb mirror://mirrors.ubuntu.com/mirrors.txt trusty main restricted universe multiverse\n' /etc/apt/sources.list"
+      - "sed -i '1s/^/deb mirror://mirrors.ubuntu.com/mirrors.txt trusty-updates main restricted universe multiverse\n' /etc/apt/sources.list"
     
 CONFIG:
   type: foss

@@ -2,16 +2,16 @@ require 'beaker-rspec'
 
 UNSUPPORTED_PLATFORMS = [ 'Windows', 'Solaris', 'AIX' ]
 
-unless ENV['RS_PROVISION'] == 'no' or ENV['BEAKER_provision'] == 'no'
-  if hosts.first.is_pe?
-    install_pe
-  else
-    install_puppet
-  end
-  hosts.each do |host|
-    on hosts, "mkdir -p #{host['distmoduledir']}"
-  end
-end
+#unless ENV['RS_PROVISION'] == 'no' or ENV['BEAKER_provision'] == 'no'
+#  if hosts.first.is_pe?
+#    install_pe
+#  else
+#    install_puppet
+#  end
+#  hosts.each do |host|
+#    on hosts, "mkdir -p #{host['distmoduledir']}"
+#  end
+#end
 
 RSpec.configure do |c|
   # Project root
