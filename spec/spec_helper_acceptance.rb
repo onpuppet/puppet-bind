@@ -22,9 +22,13 @@ RSpec.configure do |c|
 
   # Configure all nodes in nodeset
   c.before :suite do
+    
     # Install module and dependencies
     puppet_module_install(:source => proj_root, :module_name => 'bind')
     hosts.each do |host|
+      # Set up static ip
+      host.inspect
+      
       # Required for binding tests.
       if fact('osfamily') == 'RedHat'
         version = fact("operatingsystemmajrelease")
@@ -32,7 +36,7 @@ RSpec.configure do |c|
       end
 
       shell("/bin/touch #{default['puppetpath']}/hiera.yaml")
-      shell('puppet module install puppetlabs-stdlib --version 3.2.0', { :acceptable_exit_codes => [0,1] })
+#      shell('puppet module install puppetlabs-stdlib --version 3.2.0', { :acceptable_exit_codes => [0,1] })
       on host, puppet('module','install','puppetlabs/concat'), { :acceptable_exit_codes => [0,1] }
     end
   end

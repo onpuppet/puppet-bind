@@ -104,18 +104,12 @@ class bind (
   }
 
   concat { "${::bind::config_dir}/named.conf.local":
-    owner   => $::bind::config_file_owner,
-    group   => $::bind::config_file_group,
-    mode    => '0644',
     require => [Package[$::bind::package], Class['concat::setup']],
     notify  => Service[$::bind::servicename],
   }
 
   concat::fragment { 'named.conf.local.header':
     ensure  => present,
-    owner   => $::bind::config_file_owner,
-    group   => $::bind::config_file_group,
-    mode    => '0644',
     target  => "${::bind::config_dir}/named.conf.local",
     order   => 1,
     content => "// File managed by Puppet.\n",

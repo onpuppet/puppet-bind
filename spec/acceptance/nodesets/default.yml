@@ -5,6 +5,16 @@ HOSTS:
         platform: ubuntu-14.04-x64
         image: solarkennedy/ubuntu-14.04-puppet
         hypervisor: docker
+        docker_preserve_image: true
+        docker_image_commands: 
+         - "sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config"
+    ubuntu-server-1404-x64-slave:
+        roles:
+         - database
+        platform: ubuntu-14.04-x64
+        image: solarkennedy/ubuntu-14.04-puppet
+        hypervisor: docker
+        docker_preserve_image: true
         docker_image_commands: 
          - "sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config"
 CONFIG:
