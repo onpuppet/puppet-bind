@@ -1,5 +1,6 @@
 require 'spec_helper_acceptance'
-require 'dns'
+require 'spec/dns'
+require 'csv'
 
 describe 'bind' do
 
@@ -22,7 +23,7 @@ describe 'bind' do
           allow_transfer => [ '#{slave_ipv4}', '#{slave_ipv6}' ],
         }
   
-        bind::zone { '168.192.in-addr.arpa':
+        bind::zone { '12.168.192.in-addr.arpa':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
           allow_transfer => [ '#{slave_ipv4}', '#{slave_ipv6}' ],
         }
@@ -59,67 +60,89 @@ describe 'bind' do
     expect(apply_manifest_on(database, pp).exit_code).to(eq(0))
   end
 
-  describe "DNS Server Infrastructure" do
-    describe "Record Lookup" do
-      before(:all) do
-        # Cache DNS servers
-        @dns_servers ||= []
-        @dns_servers.push( DNS.new(master_ipv4, 'Master', 'example.com' ))
-#        @dns_servers.push( DNS.new(master_ipv6, 'Master', 'example.com' ))
-        @dns_servers.push( DNS.new(slave_ipv4, 'Slave', 'example.com' ))
-#        @dns_servers.push( DNS.new(slave_ipv6, 'Slave', 'example.com' ))
+  
+  ##### Inspired by: http://sharknet.us/2014/02/06/infrastructure-testing-with-ansible-and-serverspec-part-2/
+  
+  describe "Record Lookup" do
+    before(:all) do
+      @domain_name = 'example.com'
+      # Cache DNS servers
+      @dns_servers ||= []
+      @dns_servers.push( DNS.new(master_ipv4, 'Master', @domain_name ))
+      @dns_servers.push( DNS.new(slave_ipv4, 'Slave', @domain_name ))
+      # You can add others here
 
-        # Load DNS records from a CSV file
-        @records = CSV.readlines('spec/acceptance/records.csv')
-      end
-
-      it "Should return the correct IP address for static hostnames (A records)" do
-        @dns_servers.each do |nameserver|
-          @records.each do |record|
-            if record[2] == 'A'
-              ip = nameserver.address( record[0] )
-              expect(ip).to eql( record[1] ), "Server #{nameserver} returned #{ip} instead of #{record[1]} for #{record[0]}"
-            end
-          end
-        end
-      end
-
-      it "Should return the correct hostname for static IP addresses (PTR records)" do
-        @dns_servers.each do |nameserver|
-          @records.each do |record|
-            if record[2] == 'A'
-              host = nameserver.hostname( record[1] )
-              expect(host).to eql( record[0] ), "Server #{nameserver} returned #{host} instead of #{record[0]} for #{record[1]}"
-            end
-          end
-        end
-      end
-
-      it "Should return an IP within the DHCP scope range." do
-        @dns_servers.each do |nameserver|
-          CSV.open('spec/acceptance/dynamic_hosts.csv', 'r') do |record|
-            ip = nameserver.address( record[0] )
-            expect(ip).to_not eql('Hostname not found'), "Server #{nameserver} could not resolve #{record[0]}"
-            expect( nameserver.host_in_range?( ip,record[1],record[2])).to be_true, "Server #{nameserver} returned IP address #{ip} for #{record[0]} outside of range."
-          end
-        end
-      end
-
-      it "Should resolve external host names." do
-        external_hosts = [
-          "www.google.com",
-          "www.cnn.com",
-          "www.facebook.com"
-        ]
-        @dns_servers.each do |nameserver|
-          external_hosts.each do |host|
-            ip = nameserver.address( host )
-            expect(ip).to_not eql('Hostname not found'), "Server #{nameserver} could not resolve #{host}"
-          end
-        end
-      end
-
+      # Load DNS records from a CSV file
+      @records = CSV.readlines('spec/acceptance/records.csv')
     end
+
+    it "Should return the correct IP address for static hostnames (A records)" do
+      @dns_servers.each do |nameserver|
+        @records.each do |record|
+          if record[2] == 'A'
+            expect(nameserver.is_host?(record[0],record[1])).to be_true , "Server #{nameserver} did not find IP address #{record[1]} for #{record[0]}"
+          end
+        end
+      end
+    end
+
+    it "Should return the correct hostname for static IP addresses (PTR records)" do
+      @dns_servers.each do |nameserver|
+        @records.each do |record|
+          if record[2] == 'A'
+            expect(nameserver.is_pointer?(record[1],record[0])).to be_true , "Server #{nameserver} did not find host name #{record[0]} for #{record[1]}"
+          end
+        end
+      end
+    end
+
+    it "Should resolve external host names." do
+      external_hosts = [
+        "www.google.com",
+        "www.cnn.com",
+        "www.facebook.com"
+      ]
+      @dns_servers.each do |nameserver|
+        external_hosts.each do |host|
+          ip = nameserver.address( host )
+          expect(ip).to_not eql('Hostname not found'), "Server #{nameserver} could not resolve #{host}"
+        end
+      end
+    end
+
+    it "Should return the correct mail servers (MX records)" do
+      @dns_servers.each do |nameserver|
+        @records.each do |record|
+          if record[2] == 'MX'
+            exists = nameserver.is_mail_server?( @domain_name, record[0], 10 )
+            expect(exists).to be_true, "Server #{nameserver} did have an MX record for #{record[0]}"
+          end
+        end
+      end
+    end
+
+    it "Should return the correct nameservers (NS records)" do
+      @dns_servers.each do |nameserver|
+        @records.each do |record|
+          if record[2] == 'NS'
+            exists = nameserver.is_nameserver?( @domain_name, record[0] )
+            expect(exists).to be_true, "Server #{nameserver} did have an NS record for #{record[0]}"
+          end
+        end
+      end
+    end
+
+    it "Should return the correct aliases (CNAME records)" do
+      @dns_servers.each do |nameserver|
+        @records.each do |record|
+          if record[2] == 'CNAME'
+            exists = nameserver.is_alias?( record[0], record[1] )
+            expect(exists).to be_true, "Server #{nameserver} did have a CNAME record for #{record[0]} that aliased to #{record[1]}"
+          end
+        end
+      end
+    end
+
   end
 
 end
