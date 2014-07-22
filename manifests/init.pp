@@ -99,6 +99,9 @@ class bind (
   concat { "${bind::config_dir}/named.conf.local":
     require => [Package[$bind::package], Class['concat::setup']],
     notify  => Service[$bind::servicename],
+    owner   => $bind::config_file_owner,
+    group   => $bind::config_file_group,
+    mode    => $bind::config_file_mode,
   }
 
   concat::fragment { 'named.conf.local.header':
