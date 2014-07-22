@@ -115,11 +115,16 @@ class bind (
   # Main package and service
   package { $bind::package: ensure => 'present' }
 
+  $service_location = $::osfamily ? {
+    default => '/sbin/service',
+    Debian  => '/usr/sbin/service'
+  }
+
   service { $bind::servicename:
     ensure     => running,
     hasstatus  => true,
     enable     => true,
-    restart    => "/sbin/service ${bind::servicename} reload",
+    restart    => "${service_location} ${bind::servicename} reload",
     hasrestart => true,
     require    => Package[$bind::package],
   }
