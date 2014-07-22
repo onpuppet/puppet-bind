@@ -3,6 +3,8 @@
 class bind::params {
   $bindlogdir = '/var/log/named'
 
+  $forwarders = [ '8.8.8.8', '8.8.4.4' ]
+
   $config_dir = $::osfamily ? {
     'RedHat'  => '/etc/named',
     'Debian'  => '/etc/bind',
@@ -21,7 +23,7 @@ class bind::params {
 
   $config_file = "${config_dir}/named.conf"
 
-  $binkey_file = $::osfamily ? {
+  $bindkey_file = $::osfamily ? {
     'RedHat' => '/etc/named.iscdlv.key',
     'Debian' => '/etc/bind/bind.keys',
     default  => '/etc/bind/bind.keys',

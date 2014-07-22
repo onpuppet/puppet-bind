@@ -10,7 +10,10 @@ describe 'bind' do
     # Using puppet_apply as a helper
     it 'should install master with no errors' do
       pp = <<-EOS
-        class { 'bind': }
+        class { 'bind': 
+          listen_on_addr    => 'any',
+          listen_on_v6_addr => 'any',
+        }
       EOS
       
       # Run it twice and test for idempotency
@@ -19,11 +22,15 @@ describe 'bind' do
     end
 
   it 'should install slave with no errors' do
-  #      slave_pp = <<-EOS
-  #      class { 'bind': masters => { master_ip } }
-  #      EOS
+        pp = <<-EOS
+          class { 'bind': 
+            masters => { 'masterlist' => [ '#{master_ip}' ] },
+            listen_on_addr    => 'any',
+            listen_on_v6_addr => 'any',
+          }
+        EOS
         
-        pp = "class { 'bind': masters => { 'masters' => [ '" + master_ip + "' ] } }"
+#        pp = "class { 'bind': masters => { 'masters' => [ '" + master_ip + "' ] } }"
         
         # Run it twice and test for idempotency
         expect(apply_manifest_on(database, pp).exit_code).to_not(eq(1))
