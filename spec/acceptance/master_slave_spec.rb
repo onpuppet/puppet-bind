@@ -15,7 +15,8 @@ describe 'bind' do
   it 'should install master with no errors' do
     pp = <<-EOS
         class { 'bind': 
-          allow_notify      => [ '#{slave_ipv4}', '#{slave_ipv6}' ],  
+          allow_notify      => [ '#{slave_ipv4}', '#{slave_ipv6}' ],
+          forwarders        => [ '144.254.71.184' ] 
         }
         
         bind::zone { 'example.com':
@@ -52,6 +53,7 @@ describe 'bind' do
     pp = <<-EOS
           class { 'bind': 
             masters => { 'masterlist' => [ '#{master_ipv4}', '#{master_ipv6}' ] },
+            forwarders        => [ '144.254.71.184' ] 
           }
     EOS
 

@@ -52,7 +52,7 @@ class bind::params {
     default   => 'named',
   }
 
-  $includes = ["$config_dir/named.conf.local", "$config_dir/named.conf.default-zones"]
+  $includes = ["${config_dir}/named.conf.local", "${config_dir}/named.conf.default-zones"]
 
   $package = $::osfamily ? {
     'RedHat'  => 'bind',
