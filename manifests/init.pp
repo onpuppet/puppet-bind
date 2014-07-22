@@ -4,8 +4,8 @@
 #
 # Sample Usage :
 #  class { 'bind':
-#    lister_on_addr    => 'any',
-#    listen_on_v6_addr => 'any',
+#    lister_on_addr    => ['any'],
+#    listen_on_v6_addr => ['any'],
 #  }
 #
 class bind (
