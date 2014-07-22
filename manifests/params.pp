@@ -3,6 +3,13 @@
 class bind::params {
   $bindlogdir = '/var/log/named'
 
+
+  $listen_on_port = 53
+  $listen_on_addr = ['any']
+  $listen_on_v6_port = 53
+  $listen_on_v6_addr = ['any']
+  $allow_query = ['any']
+
   $forwarders = ['8.8.8.8', '8.8.4.4']
 
   $config_dir = $::osfamily ? {

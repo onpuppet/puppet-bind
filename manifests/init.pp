@@ -15,10 +15,10 @@ class bind (
   $masters                = {
   }
   ,
-  $listen_on_port         = '53',
-  $listen_on_addr         = ['127.0.0.1'],
-  $listen_on_v6_port      = '53',
-  $listen_on_v6_addr      = ['::1'],
+  $listen_on_port         = $bind::params::listen_on_port,
+  $listen_on_addr         = $bind::params::listen_on_addr,
+  $listen_on_v6_port      = $bind::params::listen_on_v6_port,
+  $listen_on_v6_addr      = $bind::params::listen_on_v6_addr,
   $forwarders             = $bind::params::forwarders,
   $config_dir             = $bind::params::config_dir,
   $directory              = $bind::params::directory,
@@ -30,7 +30,7 @@ class bind (
   $dump_file              = '/var/named/data/cache_dump.db',
   $statistics_file        = '/var/named/data/named_stats.txt',
   $memstatistics_file     = '/var/named/data/named_mem_stats.txt',
-  $allow_query            = ['localhost'],
+  $allow_query            = $bind::params::allow_query,
   $allow_query_cache      = [],
   $recursion              = 'yes',
   $allow_recursion        = [],
