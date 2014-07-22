@@ -3,7 +3,7 @@
 class bind::params {
   $bindlogdir = '/var/log/named'
 
-  $forwarders = [ '8.8.8.8', '8.8.4.4' ]
+  $forwarders = ['8.8.8.8', '8.8.4.4']
 
   $config_dir = $::osfamily ? {
     'RedHat'  => '/etc/named',
@@ -14,7 +14,7 @@ class bind::params {
 
   $directory = $::osfamily ? {
     'Debian' => '/var/cache/bind',
-    default => '/var/named'
+    default  => '/var/named'
   }
 
   $source = ''
@@ -45,6 +45,8 @@ class bind::params {
     default   => 'named',
   }
 
+  $includes = ["$config_dir/named.conf.local", "$config_dir/named.conf.default-zones"]
+
   $package = $::osfamily ? {
     'RedHat'  => 'bind',
     'Debian'  => 'bind9',
@@ -57,6 +59,5 @@ class bind::params {
     'Debian'  => 'bind9',
     'FreeBSD' => 'named',
     default   => 'named',
-  }
-}
+  } }
 
