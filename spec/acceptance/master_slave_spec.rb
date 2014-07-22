@@ -1,4 +1,5 @@
 require 'spec_helper_acceptance'
+require 'dns'
 
 describe 'bind' do
 
@@ -27,16 +28,16 @@ describe 'bind' do
         }
         
         bind::record::a {
-          'ns1':
+          'gateway':
             zone => 'example.com',
-            data => '#{master_ipv4}',
+            data => '192.168.12.1',
             ptr  => true
         }
         
         bind::record::a {
-          'ns2':
+          'mail':
             zone => 'example.com',
-            data => '#{slave_ipv4}',
+            data => '192.168.12.3',
             ptr  => true
         }
     EOS
