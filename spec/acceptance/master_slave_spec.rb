@@ -11,8 +11,8 @@ describe 'bind' do
     it 'should install master with no errors' do
       pp = <<-EOS
         class { 'bind': 
-          listen_on_addr    => 'any',
-          listen_on_v6_addr => 'any',
+          listen_on_addr    => { 'any' },
+          listen_on_v6_addr => { 'any' },
         }
       EOS
       
@@ -25,8 +25,8 @@ describe 'bind' do
         pp = <<-EOS
           class { 'bind': 
             masters => { 'masterlist' => [ '#{master_ip}' ] },
-            listen_on_addr    => 'any',
-            listen_on_v6_addr => 'any',
+            listen_on_addr    => { 'any' },
+            listen_on_v6_addr => { 'any' },
           }
         EOS
         
