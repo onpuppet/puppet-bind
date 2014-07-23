@@ -59,7 +59,6 @@ class DNS
   def is_host?( hostname, ip_address )
     records = @resolver.getresources( hostname, Resolv::DNS::Resource::IN::A )
     records.each do |record|
-      STDOUT.write hostname + " resolved to: " + record.address.to_s
       if record.address.to_s == ip_address
         return true
       end

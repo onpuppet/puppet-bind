@@ -66,5 +66,6 @@ class bind::params {
     'Debian'  => 'bind9',
     'FreeBSD' => 'named',
     default   => 'named',
-  } }
+  }
+}
 

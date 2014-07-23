@@ -42,10 +42,8 @@ class bind (
   $dnssec_enable          = 'yes',
   $dnssec_validation      = 'yes',
   $dnssec_lookaside       = 'auto',
-  $zones                  = {
-  }
-  ,
-  $includes               = $bind::params::includes,
+  $zones                  = {},
+  $includes               = [],
   $views                  = {
   }
   ,

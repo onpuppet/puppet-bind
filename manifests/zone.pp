@@ -49,7 +49,7 @@ define bind::zone (
     default => $name
   }
 
-  $zone_file = "${bind::config_dir}/zones/db.${name}"
+  $zone_file = "${::bind::config_dir}/zones/db.${name}"
   $zone_file_stage = "${zone_file}.stage"
 
   if $ensure == absent {
@@ -92,7 +92,7 @@ define bind::zone (
   # Include Zone in named.conf.local
   concat::fragment{"named.conf.local.${name}.include":
     ensure  => $ensure,
-    target  => "${bind::config_dir}/named.conf.local",
+    target  => "${::bind::config_dir}/named.conf.local",
     order   => 3,
     content => template("${module_name}/zone.erb"),
     require => Package[$bind::package],
