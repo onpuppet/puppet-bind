@@ -45,7 +45,7 @@ define bind::zone (
   }
 
   $zone = $reverse ? {
-    true    => "${name}.in-addr.arpa",
+    true    => "${name}.IN-ADDR.ARPA",
     default => $name
   }
 

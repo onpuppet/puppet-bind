@@ -35,9 +35,9 @@ bind::server::conf { '/etc/named.conf':
       'type master',
       'file "myzone.lan"',
     ],
-    '1.168.192.in-addr.arpa' => [
+    '1.168.192.IN-ADDR.ARPA' => [
       'type master',
-      'file "1.168.192.in-addr.arpa"',
+      'file "1.168.192.IN-ADDR.ARPA"',
     ],
   },
 }
@@ -49,15 +49,15 @@ The zone files for the above could then be managed like this :
 bind::server::file { 'myzone.lan':
   source => 'puppet:///modules/mymodule/dns/myzone.lan',
 }
-bind::server::file { '1.168.192.in-addr.arpa':
-  source => 'puppet:///modules/mymodule/dns/1.168.192.in-addr.arpa',
+bind::server::file { '1.168.192.IN-ADDR.ARPA':
+  source => 'puppet:///modules/mymodule/dns/1.168.192.IN-ADDR.ARPA',
 }
 ```
 
 Then if all source files are in the same location and named after the zone :
 
 ```puppet
-bind::server::file { [ 'myzone.lan', '1.168.192.in-addr.arpa' ]:
+bind::server::file { [ 'myzone.lan', '1.168.192.IN-ADDR.ARPA' ]:
   source_base => 'puppet:///modules/mymodule/dns/',
 }
 ```

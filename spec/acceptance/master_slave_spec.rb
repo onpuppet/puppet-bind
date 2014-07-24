@@ -24,7 +24,7 @@ describe 'bind' do
           allow_transfer => [ '#{slave_ipv4}', '#{slave_ipv6}' ],
         }
   
-        bind::zone { '12.168.192.in-addr.arpa':
+        bind::zone { '12.168.192.IN-ADDR.ARPA':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
           allow_transfer => [ '#{slave_ipv4}', '#{slave_ipv6}' ],
         }
