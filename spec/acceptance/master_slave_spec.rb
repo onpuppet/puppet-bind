@@ -32,76 +32,73 @@ describe 'bind' do
     end
   end
 
-#  master_ipv4 = on( master, facter('ipaddress')).stdout.strip
-#  slave_ipv4 = on( database, facter('ipaddress')).stdout.strip
-#  master_ipv6 = on( master, facter('ipaddress6')).stdout.strip
-#  slave_ipv6 = on( database, facter('ipaddress6')).stdout.strip
-#
-#  master_ips = if master_ipv6.nil? then "'#{master_ipv4}'" else "'#{master_ipv4}', '#{master_ipv6}'" end
-#  slave_ips = if master_ipv6.nil? then "'#{slave_ipv4}'" else "'#{slave_ipv4}', '#{slave_ipv6}'" end
-#  
-#  # TODO parse facter('netmask') from 255.255.0.0 syntax to 172.17.0.0/16
-#
-#  # Using puppet_apply as a helper
-#  it 'should install master with no errors' do
-#    pp = <<-EOS
-#        class { 'bind': 
-#          allow_notify      => [ #{slave_ips} ],
-#          forwarders        => [ '144.254.71.184' ] 
-#        }
-#        
-#        bind::zone { 'example.com':
-#          nameservers    => ['ns1.example.com', 'ns2.example.com'],
-#          allow_transfer => [ #{slave_ips} ],
-#        }
-#  
-#        bind::zone { '12.168.192.IN-ADDR.ARPA':
-#          nameservers    => ['ns1.example.com', 'ns2.example.com'],
-#          allow_transfer => [ #{slave_ips} ],
-#        }
-#        
-#        bind::record::a {
-#          'gateway':
-#            zone => 'example.com',
-#            data => '192.168.12.1',
-#            ptr  => true
-#        }
-#        
-#        bind::record::a {
-#          'mail':
-#            zone => 'example.com',
-#            data => '192.168.12.3',
-#            ptr  => true
-#        }
-#    EOS
-#
-#    # Run it twice and test for idempotency
-#    expect(apply_manifest_on(master, pp).exit_code).to_not(eq(1))
-#    expect(apply_manifest_on(master, pp).exit_code).to(eq(0))
-#  end
-#
-#  it 'should install slave with no errors' do
-#    pp = <<-EOS
-#          class { 'bind': 
-#            masters => { 'masterlist' => [ #{master_ips} ] },
-#            forwarders        => [ '144.254.71.184' ] 
-#          }
-#    EOS
-#
-#    # Run it twice and test for idempotency
-#    expect(apply_manifest_on(database, pp).exit_code).to_not(eq(1))
-#    expect(apply_manifest_on(database, pp).exit_code).to(eq(0))
-#  end
+  master_ipv4 = on( master, facter('ipaddress')).stdout.strip
+  slave_ipv4 = on( database, facter('ipaddress')).stdout.strip
+  master_ipv6 = on( master, facter('ipaddress6')).stdout.strip
+  slave_ipv6 = on( database, facter('ipaddress6')).stdout.strip
+  master_ips = if master_ipv6.nil? then "'#{master_ipv4}'" else "'#{master_ipv4}', '#{master_ipv6}'" end
+  slave_ips = if master_ipv6.nil? then "'#{slave_ipv4}'" else "'#{slave_ipv4}', '#{slave_ipv6}'" end
 
-  it 'should install slave with no errors' do
+  # Using puppet_apply as a helper
+  it 'should install master with no errors' do
     pp = <<-EOS
-          class { 'bind': }
+        class { 'bind': 
+          allow_notify      => [ #{slave_ips} ],
+          forwarders        => [ '144.254.71.184' ] 
+        }
+        
+        bind::zone { 'example.com':
+          nameservers    => ['ns1.example.com', 'ns2.example.com'],
+          allow_transfer => [ #{slave_ips} ],
+        }
+  
+        bind::zone { '12.168.192.IN-ADDR.ARPA':
+          nameservers    => ['ns1.example.com', 'ns2.example.com'],
+          allow_transfer => [ #{slave_ips} ],
+        }
+        
+        bind::record::a {
+          'gateway':
+            zone => 'example.com',
+            data => '192.168.12.1',
+            ptr  => true
+        }
+        
+        bind::record::a {
+          'mail':
+            zone => 'example.com',
+            data => '192.168.12.3',
+            ptr  => true
+        }
     EOS
 
     # Run it twice and test for idempotency
-    expect(apply_manifest(pp).exit_code).to_not(eq(1))
-    expect(apply_manifest(pp).exit_code).to(eq(0))
+    expect(apply_manifest_on(master, pp).exit_code).to_not(eq(1))
+    expect(apply_manifest_on(master, pp).exit_code).to(eq(0))
   end
+
+  it 'should install slave with no errors' do
+    pp = <<-EOS
+          class { 'bind': 
+            masters => { 'masterlist' => [ #{master_ips} ] },
+            forwarders        => [ '144.254.71.184' ] 
+          }
+    EOS
+
+    # Run it twice and test for idempotency
+    expect(apply_manifest_on(database, pp).exit_code).to_not(eq(1))
+    expect(apply_manifest_on(database, pp).exit_code).to(eq(0))
+  end
+
+#  it 'should install with no errors' do
+#    pp = <<-EOS
+#          class { 'bind': }
+#    EOS
+#
+#    # Run it twice and test for idempotency
+#    expect(apply_manifest(pp).exit_code).to_not(eq(1))
+#    expect(apply_manifest(pp).exit_code).to(eq(0))
+#  end
   
   describe package(package_name) do
     it { should be_installed }
