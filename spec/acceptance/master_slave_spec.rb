@@ -124,25 +124,25 @@ describe 'bind' do
       @records = CSV.readlines('spec/acceptance/records.csv')
     end
 
-    it "Should return the correct IP address for static hostnames (A records)" do
-      @dns_servers.each do |nameserver|
-        @records.each do |record|
-          if record[2] == 'A'
-            expect(nameserver.is_host?(record[0],record[1])).to be_true , "Server #{nameserver} did not find IP address #{record[1]} for #{record[0]}"
-          end
-        end
-      end
-    end
-
-    it "Should return the correct hostname for static IP addresses (PTR records)" do
-      @dns_servers.each do |nameserver|
-        @records.each do |record|
-          if record[2] == 'A'
-            expect(nameserver.is_pointer?(record[1],record[0])).to be_true , "Server #{nameserver} did not find host name #{record[0]} for #{record[1]}"
-          end
-        end
-      end
-    end
+#    it "Should return the correct IP address for static hostnames (A records)" do
+#      @dns_servers.each do |nameserver|
+#        @records.each do |record|
+#          if record[2] == 'A'
+#            expect(nameserver.is_host?(record[0],record[1])).to be_true , "Server #{nameserver} did not find IP address #{record[1]} for #{record[0]}"
+#          end
+#        end
+#      end
+#    end
+#
+#    it "Should return the correct hostname for static IP addresses (PTR records)" do
+#      @dns_servers.each do |nameserver|
+#        @records.each do |record|
+#          if record[2] == 'A'
+#            expect(nameserver.is_pointer?(record[1],record[0])).to be_true , "Server #{nameserver} did not find host name #{record[0]} for #{record[1]}"
+#          end
+#        end
+#      end
+#    end
 
     it "Should resolve external host names." do
       external_hosts = [
