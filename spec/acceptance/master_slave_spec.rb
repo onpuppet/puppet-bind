@@ -34,27 +34,27 @@ describe 'bind' do
 
   master_ipv4 = on( master, facter('ipaddress')).stdout.strip
   slave_ipv4 = on( database, facter('ipaddress')).stdout.strip
-  master_ipv6 = on( master, facter('ipaddress6')).stdout.strip
-  slave_ipv6 = on( database, facter('ipaddress6')).stdout.strip
-  master_ips = if master_ipv6.nil? then "'#{master_ipv4}'" else "'#{master_ipv4}', '#{master_ipv6}'" end
-  slave_ips = if master_ipv6.nil? then "'#{slave_ipv4}'" else "'#{slave_ipv4}', '#{slave_ipv6}'" end
+#  master_ipv6 = on( master, facter('ipaddress6')).stdout.strip
+#  slave_ipv6 = on( database, facter('ipaddress6')).stdout.strip
+#  master_ips = if master_ipv6.nil? then "'#{master_ipv4}'" else "'#{master_ipv4}', '#{master_ipv6}'" end
+#  slave_ips = if master_ipv6.nil? then "'#{slave_ipv4}'" else "'#{slave_ipv4}', '#{slave_ipv6}'" end
 
   # Using puppet_apply as a helper
   it 'should install master with no errors' do
     pp = <<-EOS
         class { 'bind': 
-          allow_notify      => [ #{slave_ips} ],
+          allow_notify      => [ '#{slave_ipv4}' ],
           forwarders        => [ '144.254.71.184' ] 
         }
         
         bind::zone { 'example.com':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
-          allow_transfer => [ #{slave_ips} ],
+          allow_transfer => [ '#{slave_ipv4}' ],
         }
   
         bind::zone { '12.168.192.IN-ADDR.ARPA':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
-          allow_transfer => [ #{slave_ips} ],
+          allow_transfer => [ '#{slave_ipv4}' ],
         }
         
         bind::record::a {
@@ -80,7 +80,7 @@ describe 'bind' do
   it 'should install slave with no errors' do
     pp = <<-EOS
           class { 'bind': 
-            masters => { 'masterlist' => [ #{master_ips} ] },
+            masters => { 'masterlist' => [ '#{master_ipv4}' ] },
             forwarders        => [ '144.254.71.184' ] 
           }
     EOS
