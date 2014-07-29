@@ -43,7 +43,7 @@ class bind (
   $dnssec_validation      = 'yes',
   $dnssec_lookaside       = 'auto',
   $zones                  = {},
-  $includes               = [],
+  $includes               = $bind::params::includes,
   $views                  = {
   }
   ,
@@ -62,7 +62,7 @@ class bind (
   $inet                   = '127.0.0.1',
   $inet_port              = '953',
   $bindkey_file           = $bind::params::bindkey_file,
-  $allow_notify           = [],) inherits ::bind::params {
+  $allow_notify           = [],) inherits bind::params {
   if ($bind::source and $bind::template) {
     fail('Bind: cannot set both source and template')
   }
