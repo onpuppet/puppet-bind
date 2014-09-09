@@ -13,8 +13,8 @@
 #      allow_update   => $allow_update,
 #    }
 define bind::zone (
-  $soa = "${::fqdn}.",
-  $soa_email = "root.${::fqdn}.",
+  $soa = "${::fqdn}",
+  $soa_email = "root.${::fqdn}",
   $zone_ttl = '604800',
   $zone_refresh = '604800',
   $zone_retry = '86400',

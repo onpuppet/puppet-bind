@@ -67,6 +67,7 @@ class DNS
   end
 
   def is_pointer?( ip_address, hostname )
+#    @resolver.query ip_address
     if hostname( ip_address ) == hostname
       return true
     end
@@ -84,8 +85,9 @@ class DNS
   end
 
   def is_nameserver?( domain_name, hostname )
-    mx_records = @resolver.getresources( domain_name, Resolv::DNS::Resource::IN::NS )
-    mx_records.each do |record|
+    ns_records = @resolver.getresources( domain_name, Resolv::DNS::Resource::IN::NS )
+    ns_records.each do |record|
+      STDOUT.write "NS: " + record.name.to_s + "==" + hostname
       if record.name.to_s == hostname
         return true
       end
@@ -94,8 +96,8 @@ class DNS
   end
 
   def is_alias?( hostname, host_alias )
-    mx_records = @resolver.getresources( hostname, Resolv::DNS::Resource::IN::CNAME )
-    mx_records.each do |record|
+    records = @resolver.getresources( hostname, Resolv::DNS::Resource::IN::CNAME )
+    records.each do |record|
       if record.name.to_s == host_alias
         return true
       end

@@ -42,7 +42,9 @@ class bind (
   $dnssec_enable          = 'yes',
   $dnssec_validation      = 'yes',
   $dnssec_lookaside       = 'auto',
-  $zones                  = {},
+  $zones                  = {
+  }
+  ,
   $includes               = $bind::params::includes,
   $views                  = {
   }
@@ -92,7 +94,7 @@ class bind (
     ensure  => directory,
     owner   => $bind::config_file_owner,
     group   => $bind::config_file_group,
-    mode    => '0755',
+    mode    => '0775',
     require => Package[$bind::package],
   }
 
@@ -110,6 +112,10 @@ class bind (
     order   => 1,
     content => "// File managed by Puppet.\n",
     require => Package[$bind::package],
+  }
+
+  if ($key) {
+    bind::key { 'rndckey': secret => $key }
   }
 
   # Main package and service

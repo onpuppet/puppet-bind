@@ -1,5 +1,6 @@
 require 'spec_helper_acceptance'
 require 'spec/dns'
+require 'spec/nsupdate'
 require 'csv'
 
 describe 'bind' do
@@ -34,42 +35,54 @@ describe 'bind' do
 
   master_ipv4 = on( master, facter('ipaddress')).stdout.strip
   slave_ipv4 = on( database, facter('ipaddress')).stdout.strip
-#  master_ipv6 = on( master, facter('ipaddress6')).stdout.strip
-#  slave_ipv6 = on( database, facter('ipaddress6')).stdout.strip
-#  master_ips = if master_ipv6.nil? then "'#{master_ipv4}'" else "'#{master_ipv4}', '#{master_ipv6}'" end
-#  slave_ips = if master_ipv6.nil? then "'#{slave_ipv4}'" else "'#{slave_ipv4}', '#{slave_ipv6}'" end
+  reverse_zone =  master_ipv4.split(".")[0..-2].reverse.join(".")
+  #  master_ipv6 = on( master, facter('ipaddress6')).stdout.strip
+  #  slave_ipv6 = on( database, facter('ipaddress6')).stdout.strip
+  #  master_ips = if master_ipv6.nil? then "'#{master_ipv4}'" else "'#{master_ipv4}', '#{master_ipv6}'" end
+  #  slave_ips = if master_ipv6.nil? then "'#{slave_ipv4}'" else "'#{slave_ipv4}', '#{slave_ipv6}'" end
 
   # Using puppet_apply as a helper
   it 'should install master with no errors' do
     pp = <<-EOS
-        class { 'bind': 
+        class { 'bind':
+          key               => 'Kpllul1kWrwwsnZ7VWRq5g==', 
           allow_notify      => [ '#{slave_ipv4}' ],
-          forwarders        => [ '144.254.71.184' ] 
+          forwarders        => [ '144.254.71.184' ],
         }
         
         bind::zone { 'example.com':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
           allow_transfer => [ '#{slave_ipv4}' ],
+          allow_update      => 'rndckey',
         }
   
         bind::zone { '12.168.192.IN-ADDR.ARPA':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
           allow_transfer => [ '#{slave_ipv4}' ],
+          allow_update      => 'rndckey',
+        }
+        
+        bind::zone { '#{reverse_zone}.IN-ADDR.ARPA':
+          nameservers    => ['ns1.example.com', 'ns2.example.com'],
+          allow_transfer => [ '#{slave_ipv4}' ],
+          allow_update      => 'rndckey',
         }
         
         bind::record::a {
-          'gateway':
+          'ns1':
             zone => 'example.com',
-            data => '192.168.12.1',
+            data => '#{master_ipv4}',
             ptr  => true
         }
         
         bind::record::a {
-          'mail':
+          'ns2':
             zone => 'example.com',
-            data => '192.168.12.3',
+            data => '#{slave_ipv4}',
             ptr  => true
         }
+        
+        package { 'dnsutils': ensure => present }
     EOS
 
     # Run it twice and test for idempotency
@@ -79,9 +92,28 @@ describe 'bind' do
 
   it 'should install slave with no errors' do
     pp = <<-EOS
-          class { 'bind': 
-            masters => { 'masterlist' => [ '#{master_ipv4}' ] },
-            forwarders        => [ '144.254.71.184' ] 
+          class { 'bind':
+            key        => 'Kpllul1kWrwwsnZ7VWRq5g==', 
+            masters    => { 'masterlist' => [ '#{master_ipv4}' ] },
+            forwarders => [ '144.254.71.184' ] 
+          }
+          
+          bind::zone { 'example.com':
+            nameservers   => ['ns1.example.com', 'ns2.example.com'],
+            zone_type     => 'slave',
+            slave_masters => [ '#{master_ipv4}' ],
+          }
+    
+          bind::zone { '12.168.192.IN-ADDR.ARPA':
+            nameservers   => ['ns1.example.com', 'ns2.example.com'],
+            zone_type     => 'slave',
+            slave_masters => [ '#{master_ipv4}' ],
+          }
+          
+          bind::zone { '#{reverse_zone}.IN-ADDR.ARPA':
+            nameservers   => ['ns1.example.com', 'ns2.example.com'],
+            zone_type     => 'slave',
+            slave_masters => [ '#{master_ipv4}' ],
           }
     EOS
 
@@ -90,16 +122,16 @@ describe 'bind' do
     expect(apply_manifest_on(database, pp).exit_code).to(eq(0))
   end
 
-#  it 'should install with no errors' do
-#    pp = <<-EOS
-#          class { 'bind': }
-#    EOS
-#
-#    # Run it twice and test for idempotency
-#    expect(apply_manifest(pp).exit_code).to_not(eq(1))
-#    expect(apply_manifest(pp).exit_code).to(eq(0))
-#  end
-  
+  #  it 'should install with no errors' do
+  #    pp = <<-EOS
+  #          class { 'bind': }
+  #    EOS
+  #
+  #    # Run it twice and test for idempotency
+  #    expect(apply_manifest(pp).exit_code).to_not(eq(1))
+  #    expect(apply_manifest(pp).exit_code).to(eq(0))
+  #  end
+
   describe package(package_name) do
     it { should be_installed }
   end
@@ -122,23 +154,31 @@ describe 'bind' do
 
       # Load DNS records from a CSV file
       @records = CSV.readlines('spec/acceptance/records.csv')
+      
+      # Add records using nsupdate
+      @nsupdate = Nsupdate.new(master_ipv4, '/root/rndc.key')
+      @records.each do |record|
+        @nsupdate.create(record[0], record[1], record[2])
+      end
+      # Allow sync to slave to take place
+      sleep(5.0)
     end
 
-#    it "Should return the correct IP address for static hostnames (A records)" do
-#      @dns_servers.each do |nameserver|
-#        @records.each do |record|
-#          if record[2] == 'A'
-#            expect(nameserver.is_host?(record[0],record[1])).to be_true , "Server #{nameserver} did not find IP address #{record[1]} for #{record[0]}"
-#          end
-#        end
-#      end
-#    end
-#
+    it "Should return the correct IP address for static hostnames (A records)" do
+      @dns_servers.each do |nameserver|
+        @records.each do |record|
+          if record[2] == 'A'
+            expect(nameserver.is_host?(record[0],record[1])).to be_true , "Server #{nameserver} did not find IP address #{record[1]} for #{record[0]}"
+          end
+        end
+      end
+    end
+
 #    it "Should return the correct hostname for static IP addresses (PTR records)" do
 #      @dns_servers.each do |nameserver|
 #        @records.each do |record|
-#          if record[2] == 'A'
-#            expect(nameserver.is_pointer?(record[1],record[0])).to be_true , "Server #{nameserver} did not find host name #{record[0]} for #{record[1]}"
+#          if record[2] == 'PTR'
+#            expect(nameserver.is_pointer?(record[0],record[1])).to be_true , "Server #{nameserver} did not find host name #{record[0]} for #{record[1]}"
 #          end
 #        end
 #      end
@@ -146,9 +186,9 @@ describe 'bind' do
 
     it "Should resolve external host names." do
       external_hosts = [
+        "www.cisco.com",
         "www.google.com",
-        "www.cnn.com",
-        "www.facebook.com"
+        "www.cnn.com"
       ]
       @dns_servers.each do |nameserver|
         external_hosts.each do |host|
@@ -162,7 +202,7 @@ describe 'bind' do
       @dns_servers.each do |nameserver|
         @records.each do |record|
           if record[2] == 'MX'
-            exists = nameserver.is_mail_server?( @domain_name, record[0], 10 )
+            exists = nameserver.is_mail_server?( record[0], record[1], 10 )
             expect(exists).to be_true, "Server #{nameserver} did have an MX record for #{record[0]}"
           end
         end
@@ -173,7 +213,7 @@ describe 'bind' do
       @dns_servers.each do |nameserver|
         @records.each do |record|
           if record[2] == 'NS'
-            exists = nameserver.is_nameserver?( @domain_name, record[0] )
+            exists = nameserver.is_nameserver?( record[0], record[1] )
             expect(exists).to be_true, "Server #{nameserver} did have an NS record for #{record[0]}"
           end
         end
@@ -190,7 +230,5 @@ describe 'bind' do
         end
       end
     end
-
   end
-
 end
