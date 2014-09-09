@@ -154,12 +154,14 @@ describe 'bind' do
 
       # Load DNS records from a CSV file
       @records = CSV.readlines('spec/acceptance/records.csv')
-      
+
       # Add records using nsupdate
-      @nsupdate = Nsupdate.new(master_ipv4, '/root/rndc.key')
+      #      @nsupdate = Nsupdate.new(master_ipv4, '/etc/bind/rndckey.key')
+      @nsupdate = Nsupdate.new(master_ipv4, '/rndc.key')
       @records.each do |record|
         @nsupdate.create(record[0], record[1], record[2])
       end
+
       # Allow sync to slave to take place
       sleep(5.0)
     end
@@ -174,15 +176,15 @@ describe 'bind' do
       end
     end
 
-#    it "Should return the correct hostname for static IP addresses (PTR records)" do
-#      @dns_servers.each do |nameserver|
-#        @records.each do |record|
-#          if record[2] == 'PTR'
-#            expect(nameserver.is_pointer?(record[0],record[1])).to be_true , "Server #{nameserver} did not find host name #{record[0]} for #{record[1]}"
-#          end
-#        end
-#      end
-#    end
+    #    it "Should return the correct hostname for static IP addresses (PTR records)" do
+    #      @dns_servers.each do |nameserver|
+    #        @records.each do |record|
+    #          if record[2] == 'PTR'
+    #            expect(nameserver.is_pointer?(record[0],record[1])).to be_true , "Server #{nameserver} did not find host name #{record[0]} for #{record[1]}"
+    #          end
+    #        end
+    #      end
+    #    end
 
     it "Should resolve external host names." do
       external_hosts = [
