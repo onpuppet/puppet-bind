@@ -120,7 +120,7 @@ logging {
 <% if !@controls.empty? -%>
 controls {
          inet <%= @inet %> port <%= @inet_port %>
-         allow {<% @controls.each do |ip| -%><%= ip %>; <% end -%>}
+         allow {<% @controls.each do |ip| -%><%= ip %>; <% end -%>};
          <% if @key -%>keys { "<%= @key %>"; };<% end -%>
 };
 <% end -%>
