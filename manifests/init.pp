@@ -116,7 +116,12 @@ class bind (
   }
 
   if ($secret) {
-    bind::key { 'rndckey': secret => $secret }
+    $real_keyname = $bind::key ? {
+      undef   => 'rndc-key',
+      default => $bind::source,
+    }
+
+    bind::key { $real_keyname: secret => $secret }
   }
 
   # Main package and service
