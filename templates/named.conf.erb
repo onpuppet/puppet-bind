@@ -121,7 +121,7 @@ logging {
 controls {
          inet <%= @inet %> port <%= @inet_port %>
          allow {<% @controls.each do |ip| -%><%= ip %>; <% end -%>}
-         keys  { <% if @key -%>"<%= @key %>";<% else -%>"rndc-key";<% end -%> };
+         <% if @key -%>keys { "<%= @key %>"; };<% end -%>
 };
 <% end -%>
 
