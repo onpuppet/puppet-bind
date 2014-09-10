@@ -60,6 +60,7 @@ class bind (
   $config_file_owner      = $bind::params::config_file_owner,
   $config_file_group      = $bind::params::config_file_group,
   $key                    = undef,
+  $secret                 = undef,
   $controls               = [],
   $inet                   = '127.0.0.1',
   $inet_port              = '953',
@@ -114,8 +115,8 @@ class bind (
     require => Package[$bind::package],
   }
 
-  if ($key) {
-    bind::key { 'rndckey': secret => $key }
+  if ($secret) {
+    bind::key { 'rndckey': secret => $secret }
   }
 
   # Main package and service
