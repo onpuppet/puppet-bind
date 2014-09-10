@@ -45,6 +45,7 @@ describe 'bind' do
   it 'should install master with no errors' do
     pp = <<-EOS
         class { 'bind':
+          key               => 'rndckey',
           secret            => 'Kpllul1kWrwwsnZ7VWRq5g==', 
           allow_notify      => [ '#{slave_ipv4}' ],
           forwarders        => [ '144.254.71.184' ],
@@ -93,6 +94,7 @@ describe 'bind' do
   it 'should install slave with no errors' do
     pp = <<-EOS
           class { 'bind':
+            key        => 'rndckey',
             secret     => 'Kpllul1kWrwwsnZ7VWRq5g==', 
             masters    => { 'masterlist' => [ '#{master_ipv4}' ] },
             forwarders => [ '144.254.71.184' ] 
