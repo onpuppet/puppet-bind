@@ -119,7 +119,7 @@ class bind (
     $real_keyname = $bind::key ? {
       undef   => 'rndc-key',
       ''      => 'rndc-key',
-      default => $bind::source,
+      default => $bind::key,
     }
 
     bind::key { $real_keyname: secret => $secret }

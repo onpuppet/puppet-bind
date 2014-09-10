@@ -15,7 +15,7 @@ UNSUPPORTED_PLATFORMS = [ 'Windows', 'Solaris', 'AIX' ]
 
 RSpec.configure do |c|
   # Stop and output on first failure
-#  c.fail_fast = true
+  c.fail_fast = true
   
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
