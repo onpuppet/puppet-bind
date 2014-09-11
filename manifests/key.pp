@@ -18,7 +18,7 @@ define bind::key ($secret, $ensure = present, $algorithm = 'hmac-md5',) {
   validate_string($algorithm)
   validate_string($secret)
 
-  file { "${::bind::params::config_dir}/${name}.key":
+  file { "${::bind::params::config_dir}/${name}":
     ensure  => $ensure,
     mode    => $bind::config_file_mode,
     owner   => $bind::params::config_file_owner,
@@ -30,7 +30,7 @@ define bind::key ($secret, $ensure = present, $algorithm = 'hmac-md5',) {
   concat::fragment { "dnskey.${name}":
     ensure  => $ensure,
     target  => "${bind::config_dir}/named.conf.local",
-    content => "include \"${bind::params::config_dir}/${name}.key\";\n",
+    content => "include \"${bind::params::config_dir}/${name}\";\n",
     notify  => Service[$::bind::servicename],
     require => Package[$::bind::package],
   }
