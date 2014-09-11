@@ -122,7 +122,10 @@ class bind (
       default => $bind::key,
     }
 
-    bind::key { $real_keyname: secret => $secret }
+    bind::key { $real_keyname:
+      secret  => $secret,
+      require => Package[$bind::package]
+    }
   }
 
   # Main package and service
