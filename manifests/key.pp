@@ -23,7 +23,7 @@ define bind::key ($secret, $ensure = present, $algorithm = 'hmac-md5',) {
     mode    => $bind::config_file_mode,
     owner   => $bind::params::config_file_owner,
     group   => $bind::params::config_file_group,
-    content => template("$module_name/dnskey.conf.erb"),
+    content => template("${module_name}/dnskey.conf.erb"),
     require => Package[$::bind::package],
   }
 

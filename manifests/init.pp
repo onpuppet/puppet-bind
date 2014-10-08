@@ -95,7 +95,7 @@ class bind (
     ensure  => directory,
     owner   => $bind::config_file_owner,
     group   => $bind::config_file_group,
-    mode    => 0775,
+    mode    => '0775',
     require => Package[$bind::package],
   }
 
