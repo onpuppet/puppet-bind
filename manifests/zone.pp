@@ -34,6 +34,7 @@ define bind::zone (
 
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
+  validate_array($slave_masters)
 
 
   if !empty($bind::forwarders) and !empty($allow_forwarder) {
