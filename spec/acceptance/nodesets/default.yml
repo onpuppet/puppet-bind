@@ -3,8 +3,9 @@ HOSTS:
         roles:
          - master
         platform: ubuntu-14.04-x64
-        image: ubuntu:14.04
+        image: ubuntu-upstart:14.04
         hypervisor: docker
+        docker_cmd: '["/sbin/init"]'
         docker_preserve_image: true
         docker_image_commands: 
          - wget --no-check-certificate https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
@@ -17,8 +18,9 @@ HOSTS:
         roles:
          - database
         platform: ubuntu-14.04-x64
-        image: ubuntu:14.04
+        image: ubuntu-upstart:14.04
         hypervisor: docker
+        docker_cmd: '["/sbin/init"]'
         docker_preserve_image: true
         docker_image_commands: 
          - wget --no-check-certificate https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
