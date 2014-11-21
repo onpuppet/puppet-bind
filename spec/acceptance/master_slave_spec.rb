@@ -97,25 +97,28 @@ describe 'bind' do
             key        => 'rndckey',
             secret     => 'Kpllul1kWrwwsnZ7VWRq5g==', 
             masters    => { 'masterlist' => [ '#{master_ipv4}' ] },
-            forwarders => [ '144.254.71.184' ] 
+            forwarders => [ '144.254.71.184' ]
           }
           
           bind::zone { 'example.com':
             nameservers   => ['ns1.example.com', 'ns2.example.com'],
             zone_type     => 'slave',
             slave_masters => [ '#{master_ipv4}' ],
+            allow_update_forwarding      => 'rndckey',
           }
     
           bind::zone { '12.168.192.IN-ADDR.ARPA':
             nameservers   => ['ns1.example.com', 'ns2.example.com'],
             zone_type     => 'slave',
             slave_masters => [ '#{master_ipv4}' ],
+            allow_update_forwarding      => 'rndckey',
           }
           
           bind::zone { '#{reverse_zone}.IN-ADDR.ARPA':
             nameservers   => ['ns1.example.com', 'ns2.example.com'],
             zone_type     => 'slave',
             slave_masters => [ '#{master_ipv4}' ],
+            allow_update_forwarding      => 'rndckey',
           }
     EOS
 
@@ -145,6 +148,14 @@ describe 'bind' do
 
   ##### Inspired by: http://sharknet.us/2014/02/06/infrastructure-testing-with-ansible-and-serverspec-part-2/
 
+  require 'tempfile'
+
+  file = Tempfile.new('rndc.key')
+  file.write('key rndckey {
+    algorithm hmac-md5;
+    secret "Kpllul1kWrwwsnZ7VWRq5g==";
+  };')
+
   describe "Record Lookup" do
     before(:all) do
       @domain_name = 'example.com'
@@ -159,7 +170,7 @@ describe 'bind' do
 
       # Add records using nsupdate
       #      @nsupdate = Nsupdate.new(master_ipv4, '/etc/bind/rndckey.key')
-      @nsupdate = Nsupdate.new(master_ipv4, '/rndc.key')
+      @nsupdate = Nsupdate.new(master_ipv4, file.path)
       @records.each do |record|
         @nsupdate.create(record[0], record[1], record[2])
       end
@@ -234,5 +245,7 @@ describe 'bind' do
         end
       end
     end
+
+    file.close
   end
 end

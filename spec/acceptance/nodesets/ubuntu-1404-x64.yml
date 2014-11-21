@@ -1,5 +1,5 @@
 HOSTS:
-    ubuntu-server-1404-x64-master:
+    ubuntu-1404-x64-master:
         roles:
          - master
         platform: ubuntu-14.04-x64
@@ -14,7 +14,7 @@ HOSTS:
          - apt-get update
          - apt-get -y install puppet curl ntpdate git ruby
          - "sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config"
-    ubuntu-server-1404-x64-slave:
+    ubuntu-1404-x64-slave:
         roles:
          - database
         platform: ubuntu-14.04-x64

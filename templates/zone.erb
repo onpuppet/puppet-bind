@@ -18,4 +18,7 @@ zone "<%= @zone %>" {
 <% if @allow_update -%>
   allow-update { key "<%= @allow_update %>"; };
 <% end -%>
+<% if @allow_update_forwarding -%>
+  allow-update-forwarding { key "<%= @allow_update_forwarding %>"; };
+<% end -%>
 };
