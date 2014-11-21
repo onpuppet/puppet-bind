@@ -127,16 +127,6 @@ describe 'bind' do
     expect(apply_manifest_on(database, pp).exit_code).to(eq(0))
   end
 
-  #  it 'should install with no errors' do
-  #    pp = <<-EOS
-  #          class { 'bind': }
-  #    EOS
-  #
-  #    # Run it twice and test for idempotency
-  #    expect(apply_manifest(pp).exit_code).to_not(eq(1))
-  #    expect(apply_manifest(pp).exit_code).to(eq(0))
-  #  end
-
   describe package(package_name) do
     it { should be_installed }
   end
@@ -183,21 +173,21 @@ describe 'bind' do
       @dns_servers.each do |nameserver|
         @records.each do |record|
           if record[2] == 'A'
-            expect(nameserver.is_host?(record[0],record[1])).to be_true , "Server #{nameserver} did not find IP address #{record[1]} for #{record[0]}"
+            expect(nameserver.is_host?(record[0],record[1])).to be(true) , "Server #{nameserver} did not find IP address #{record[1]} for #{record[0]}"
           end
         end
       end
     end
 
-    #    it "Should return the correct hostname for static IP addresses (PTR records)" do
-    #      @dns_servers.each do |nameserver|
-    #        @records.each do |record|
-    #          if record[2] == 'PTR'
-    #            expect(nameserver.is_pointer?(record[0],record[1])).to be_true , "Server #{nameserver} did not find host name #{record[0]} for #{record[1]}"
-    #          end
-    #        end
-    #      end
-    #    end
+    it "Should return the correct hostname for static IP addresses (PTR records)" do
+      @dns_servers.each do |nameserver|
+        @records.each do |record|
+          if record[2] == 'PTR'
+            expect(nameserver.is_pointer?(record[1],record[0])).to be(true) , "Server #{nameserver} did not find host name #{record[1]} for #{record[0]}"
+          end
+        end
+      end
+    end
 
     it "Should resolve external host names." do
       external_hosts = [
@@ -218,7 +208,7 @@ describe 'bind' do
         @records.each do |record|
           if record[2] == 'MX'
             exists = nameserver.is_mail_server?( record[0], record[1], 10 )
-            expect(exists).to be_true, "Server #{nameserver} did have an MX record for #{record[0]}"
+            expect(exists).to be(true), "Server #{nameserver} did have an MX record for #{record[0]}"
           end
         end
       end
@@ -240,7 +230,7 @@ describe 'bind' do
         @records.each do |record|
           if record[2] == 'CNAME'
             exists = nameserver.is_alias?( record[0], record[1] )
-            expect(exists).to be_true, "Server #{nameserver} did have a CNAME record for #{record[0]} that aliased to #{record[1]}"
+            expect(exists).to be(true), "Server #{nameserver} did have a CNAME record for #{record[0]} that aliased to #{record[1]}"
           end
         end
       end

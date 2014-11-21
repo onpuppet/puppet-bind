@@ -66,12 +66,36 @@ class DNS
     return false
   end
 
-  def is_pointer?( ip_address, hostname )
-#    @resolver.query ip_address
-    if hostname( ip_address ) == hostname
+  def is_pointer?( hostname, ip_address )
+
+    # Weird behavior. Reverting to dig due to:
+    # https://stackoverflow.com/questions/27060993/resolvdns-not-resolving-ptr-for-192-168-x
+    resolved_hostname = `/usr/bin/dig @#{@ip_address} -x #{ip_address} +short`
+    #STDOUT.write resolved_hostname
+    if resolved_hostname.delete("\n") == "#{hostname}."
       return true
     end
     return false
+
+    #    STDOUT.write name()
+    #    resolver = Resolv::DNS.new(
+    #    :nameserver => [name()],
+    #    :search => ['IN-ADDR.ARPA'],
+    #    :ndots => 1
+    #    )
+    #    record = resolver.getname(ip_address)
+    #    STDOUT.write record
+    #    STDOUT.write "hostname #{hostname}"
+    #    STDOUT.write "ip #{ip_address}"
+    #    records = resolver.getresources( ip_address, Resolv::DNS::Resource::IN::PTR )
+    #    STDOUT.write records.inspect
+    #    records.each do |record|
+    #      STDOUT.write "Comparing #{record.address.to_s} == #{hostname}"
+    #      if record.address.to_s == hostname
+    #        return true
+    #      end
+    #    end
+    #    return false
   end
 
   def is_mail_server?( domain_name, hostname, preference )

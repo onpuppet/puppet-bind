@@ -11,20 +11,31 @@ class Nsupdate
   #          :type => "PTR"}
   def create(fqdn, value, type, ttl=600, priority=10)
     nsupdate "connect"
+    forward_domain = URI.parse(fqdn).host
 
     @resolver = Resolv::DNS.new(:nameserver => @server)
     case type
     when "A"
+      #nsupdate "zone #{forward_domain}"
       nsupdate "update add #{fqdn}. #{ttl} #{type} #{value}"
+    when "AAAA"
+        #nsupdate "zone #{forward_domain}"
+        nsupdate "update add #{fqdn}. #{ttl} #{type} #{value}"
     when "CNAME"
+      #nsupdate "zone #{forward_domain}"
       nsupdate "update add #{fqdn}. #{ttl} #{type} #{value}."
     when "PTR"
-      reverse_ip = fqdn.split(".").reverse.join(".") + ".IN-ADDR.ARPA"
-      nsupdate "update add #{reverse_ip}. #{ttl} #{type} #{value}."
+      reverse_ip_array = fqdn.split(".").reverse
+      ptr_record = reverse_ip_array.join(".") + ".IN-ADDR.ARPA"
+      reverse_ip_array.shift # Remove first octet 
+      cnet_domain = reverse_ip_array.join(".") + ".IN-ADDR.ARPA"
+      nsupdate "zone #{cnet_domain}"
+      nsupdate "update add #{ptr_record}. #{ttl} #{type} #{value}."
     when "NS"
       nsupdate "zone #{fqdn}"
       nsupdate "update add #{fqdn} 0 IN #{type} #{value}"
     when "MX"
+      #nsupdate "zone #{forward_domain}"
       nsupdate "update add #{fqdn} #{ttl} #{type} #{priority} #{value}."
     end
     nsupdate "disconnect"
