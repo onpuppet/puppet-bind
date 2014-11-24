@@ -179,6 +179,16 @@ describe 'bind' do
       end
     end
 
+    it "Should return the correct IP address for static hostnames (AAAA records)" do
+      @dns_servers.each do |nameserver|
+        @records.each do |record|
+          if record[2] == 'AAAA'
+            expect(nameserver.is_host?(record[0],record[1])).to be(true) , "Server #{nameserver} did not find IP address #{record[1]} for #{record[0]}"
+          end
+        end
+      end
+    end
+
     it "Should return the correct hostname for static IP addresses (PTR records)" do
       @dns_servers.each do |nameserver|
         @records.each do |record|

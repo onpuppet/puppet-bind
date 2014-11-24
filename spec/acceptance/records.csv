@@ -1,6 +1,7 @@
 host1.example.com,192.168.12.1,A
 192.168.12.1,host1.example.com,PTR
 host2.example.com,192.168.12.3,A
+host2.example.com,fe80::1234,AAAA
 192.168.12.3,host2.example.com,PTR
 example.com,host2.example.com,MX
 host4.example.com,example.domain.com,CNAME
