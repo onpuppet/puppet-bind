@@ -66,6 +66,16 @@ class DNS
     return false
   end
 
+  def is_host_ipv6?( hostname, ip_address )
+    records = @resolver.getresources( hostname, Resolv::DNS::Resource::IN::AAAA )
+    records.each do |record|
+      if record.address.to_s.upcase == ip_address.upcase
+        return true
+      end
+    end
+    return false
+  end
+
   def is_pointer?( hostname, ip_address )
 
     # Weird behavior. Reverting to dig due to:
