@@ -85,7 +85,13 @@ define bind::zone (
       user        => $::bind::config_file_owner,
       group       => $::bind::config_file_group,
       require     => Package[$::bind::package],
-      notify      => Service[$::bind::servicename],
+      notify      => [Service[$::bind::servicename], [Exec["named-checkzone-${zone}"]]],
+    }
+
+    exec { "named-checkzone-${zone}":
+      command     => "/usr/sbin/named-checkzone ${name} ${zone_file}",
+      refreshonly => true,
+      require     => Exec["bump-${zone}-serial"],
     }
   }
 
