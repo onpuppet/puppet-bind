@@ -154,6 +154,8 @@ zone "<%= key %>" IN {
 
 <% end -%>
 <% end -%>
+include "/etc/bind/named.conf.local";
+include "/etc/bind/named.conf.default-zones";
 <% if @recursion == 'yes' -%>
 include "/etc/bind/zones.rfc1918";
 <% end -%>

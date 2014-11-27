@@ -39,20 +39,12 @@ describe 'bind' do
         'mymasters' => ['192.0.2.1', '198.51.100.1']
         },
         :zones => {
-        'example.com' => [
-        'type master',
-        'file "example.com"',
-        ],
-        'example.org' => [
-        'type slave',
-        'file "slaves/example.org"',
-        'masters { mymasters; }',
-        ],
+        'example.com' => { 'zone_type' => 'master' },
+        'example.org' => { 'zone_type' => 'slave', 'slave_masters' => ['192.0.2.1', '198.51.100.1'] },
         },
-        :includes => [
-        '/etc/myzones.conf',
-        ],
-      } }
+        :includes => [ '/etc/myzones.conf' ],
+      }
+    }
 
     it 'should generate the bind configuration' do
       expect { should contain_file('/etc/named.conf')}
@@ -60,9 +52,14 @@ describe 'bind' do
       content.should_not be_empty
       content.should match('acl rfc1918')
       content.should match('masters mymasters')
-      content.should match('zone "example.com"')
-      content.should match('zone "example.org"')
       content.should match('include "/etc/myzones.conf"')
     end
+
+    it 'should have concat resources for zones' do
+      should contain_concat('/etc/bind/named.conf.local')
+      should contain_concat__fragment('named.conf.local.example.com.include').with_content(/zone "example.com"/).with_target('/etc/bind/named.conf.local')
+      should contain_concat__fragment('named.conf.local.example.org.include').with_content(/zone "example.org"/).with_target('/etc/bind/named.conf.local')
+    end
+
   end
 end

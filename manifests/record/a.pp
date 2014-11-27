@@ -11,7 +11,7 @@ define bind::record::a (
   $host = $name ) {
 
   $alias = "${host},A,${zone}"
-
+  # FIXME -- use nsupdate instead of manipulating zonefile directly
   bind::record { $alias:
     zone => $zone,
     host => $host,

@@ -91,6 +91,7 @@ define bind::zone (
     exec { "named-checkzone-${zone}":
       command     => "/usr/sbin/named-checkzone ${name} ${zone_file}",
       refreshonly => true,
+      logoutput   => true,
       require     => Exec["bump-${zone}-serial"],
     }
   }

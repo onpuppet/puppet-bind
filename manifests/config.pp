@@ -30,6 +30,7 @@ class bind::config {
   exec { 'named-checkconf':
     command     => "/usr/sbin/named-checkconf ${bind::config_file}",
     refreshonly => true,
+    logoutput   => true,
     require     => File[$bind::config_file],
   }
 
@@ -54,6 +55,29 @@ class bind::config {
     order   => 1,
     content => "// File managed by Puppet.\n",
   }
+
+  # Zones
+  if empty($bind::masters) {
+    $fqdn_hash = {
+      "${::fqdn} " => $::fqdn
+    }
+    $nameserver_hash = merge($bind::masters, $fqdn_hash)
+    $defaults = {
+      'nameservers'             => keys($nameserver_hash),
+      'zone_type'               => 'slave',
+      'slave_masters'           => keys($bind::masters),
+      'allow_update_forwarding' => $bind::key,
+    }
+  } else {
+    $defaults = {
+      'nameservers'    => [$::fqdn, $bind::allow_notify],
+      'zone_type'      => 'master',
+      'allow_transfer' => [$bind::allow_notify],
+      'allow_update'   => $bind::key,
+    }
+  }
+
+  create_resources(bind::zone, $bind::zones, $defaults)
 
   # Log folder
   file { $bind::bindlogdir:
