@@ -8,6 +8,7 @@ describe 'bind' do
   let(:params) { { :config_file => '/etc/bind/named.conf', :package => 'bind', 'servicename' => 'bind' } }
 
   describe 'Test that catalogue compiles' do
+    it { should compile.with_all_deps }
     it { should contain_class('bind') }
   end
 
