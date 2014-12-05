@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="project" default="build">
 
-	<target name="build" depends="bundle-install,syntax,lint">
+	<target name="build" depends="clean,bundle-install,syntax,lint">
 		<antcall target="spec" />
 		<antcall target="acceptance" />
 	</target>
+
+    <target name="clean">
+        <delete dir="${basedir}/spec/fixtures/modules/concat"/>
+    </target>
 
 	<target name="rvm" description="Prepare RVM">
 		<exec executable="${user.home}/.rvm/scripts/rvm" />
