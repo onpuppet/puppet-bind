@@ -24,7 +24,6 @@ class bind::config {
     mode    => $bind::config_file_mode,
     source  => $manage_file_source,
     content => $manage_file_content,
-    notify  => Exec['named-checkconf'],
   }
 
   exec { 'named-checkconf':
@@ -43,10 +42,10 @@ class bind::config {
 
   concat { "${bind::config_dir}/named.conf.local":
     require => [Package[$bind::package], Class['concat::setup']],
-    notify  => Service[$bind::servicename],
     owner   => $bind::config_file_owner,
     group   => $bind::config_file_group,
     mode    => $bind::config_file_mode,
+    notify  => Exec['named-checkconf'],
   }
 
   concat::fragment { 'named.conf.local.header':
@@ -89,14 +88,11 @@ class bind::config {
   }
 
   # Rndc key
-  if ($bind::secret) {
-    $real_keyname = $bind::key ? {
-      undef   => 'rndc-key',
-      ''      => 'rndc-key',
-      default => $bind::key,
-    }
-
-    bind::key { $real_keyname: secret => $bind::secret, }
+  $real_keyname = $bind::key ? {
+    undef   => 'rndc-key',
+    ''      => 'rndc-key',
+    default => $bind::key,
   }
 
+  bind::key { $real_keyname: secret => $bind::secret, }
 }
