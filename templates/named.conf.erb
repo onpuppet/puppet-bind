@@ -118,10 +118,12 @@ logging {
 };
 
 <% if !@controls.empty? -%>
+include /etc/bind/rndc-key
+
 controls {
          inet <%= @inet %> port <%= @inet_port %>
          allow {<% @controls.each do |ip| -%><%= ip %>; <% end -%>}
-         keys  { <% if @key -%>"<%= @key %>";<% else -%>"rndc-key";<% end -%> };
+         keys  { <% if @key -%>"<%= @key %>"; "rndc-key";<% else -%>"rndc-key";<% end -%> };
 };
 <% end -%>
 
