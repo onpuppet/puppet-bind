@@ -118,7 +118,7 @@ logging {
 };
 
 <% if !@controls.empty? -%>
-include /etc/bind/rndc.key
+include "/etc/bind/rndc.key"
 
 controls {
          inet <%= @inet %> port <%= @inet_port %>
