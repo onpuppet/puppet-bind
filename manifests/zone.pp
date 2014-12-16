@@ -35,11 +35,6 @@ define bind::zone (
   validate_array($allow_forwarder)
   validate_array($slave_masters)
 
-  if !empty($bind::forwarders) and !empty($allow_forwarder) {
-    fail("You cannot specify a global forwarder and \
-    a zone forwarder for zone ${soa}")
-  }
-
   if !member(['first', 'only'], $forward_policy) {
     fail('The forward policy can only be set to either first or only')
   }
