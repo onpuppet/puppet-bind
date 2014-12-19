@@ -13,9 +13,9 @@ define bind::record (
   $order = 9
 ) {
 
-  $zone_file_stage = "${bind::config_dir}/zones/db.${zone}.stage"
+  $zone_file_stage = "${bind::data_dir}/${zone}.stage"
 
-  concat::fragment{"db.${zone}.${name}.record":
+  concat::fragment{"${zone}.${name}.record":
     target  => $zone_file_stage,
     order   => $order,
     content => template("${module_name}/zone_record.erb")

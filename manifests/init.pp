@@ -17,6 +17,7 @@ class bind (
   $listen_on_v6_addr      = $bind::params::listen_on_v6_addr,
   $forwarders             = $bind::params::forwarders,
   $config_dir             = $bind::params::config_dir,
+  $data_dir               = $bind::params::data_dir,
   $directory              = $bind::params::directory,
   $managed_keys_directory = $bind::params::managed_keys_directory,
   $hostname               = $bind::params::hostname,

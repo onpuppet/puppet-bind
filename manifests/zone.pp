@@ -49,8 +49,10 @@ define bind::zone (
     default => $name
   }
 
-  $zone_file = "${::bind::config_dir}/zones/db.${name}"
+  $zone_file = "${::bind::data_dir}/${name}"
   $zone_file_stage = "${zone_file}.stage"
+
+  # FIXME -- file { replace = false } + dynamic records instead of stage and exec
 
   if $ensure == absent {
     file { $zone_file: ensure => absent, }
@@ -66,7 +68,7 @@ define bind::zone (
       notify  => Exec["bump-${zone}-serial"]
     }
 
-    concat::fragment { "db.${name}.soa":
+    concat::fragment { "${name}.soa":
       target  => $zone_file_stage,
       order   => 1,
       content => template("${module_name}/zone_file.erb")

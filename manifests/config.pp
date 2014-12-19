@@ -33,13 +33,6 @@ class bind::config {
     require     => File[$bind::config_file],
   }
 
-  file { "${bind::config_dir}/zones":
-    ensure => directory,
-    owner  => $bind::config_file_owner,
-    group  => $bind::config_file_group,
-    mode   => '0775',
-  }
-
   concat { "${bind::config_dir}/named.conf.local":
     require => [Package[$bind::package], Class['concat::setup']],
     owner   => $bind::config_file_owner,
@@ -56,6 +49,13 @@ class bind::config {
   }
 
   # Zones
+  file { $bind::data_dir:
+    ensure => directory,
+    owner  => $bind::config_file_owner,
+    group  => $bind::config_file_group,
+    mode   => '0775',
+  }
+
   if empty($bind::masters) {
     $fqdn_hash = {
       "${::fqdn} " => $::fqdn

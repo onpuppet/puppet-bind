@@ -45,6 +45,12 @@ class bind::params {
     default   => '/etc/bind',
   }
 
+  $data_dir = $::osfamily ? {
+    'RedHat' => '/var/named',
+    'Debian' => '/var/lib/bind',
+    default  => '/var/lib/bind',
+  }
+
   $directory = $::osfamily ? {
     'Debian' => '/var/cache/bind',
     default  => '/var/named'
