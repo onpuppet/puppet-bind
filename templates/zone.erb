@@ -6,22 +6,17 @@ zone "<%= @zone %>" {
 <% if @zone_type == 'slave' -%>
   file "<%= @zone_file %>";
   masters {<% @slave_masters.each do |ip| -%> <%= ip %>; <% end -%>};
+  <% if @allow_update_forwarding -%>
+  allow-update-forwarding { key "<%= @allow_update_forwarding %>"; };
+  <% end -%>
 <% elsif @zone_type == 'master' -%>
   file "<%= @zone_file %>";
-<% if @allow_transfer -%>
-  allow-transfer {<% @allow_transfer.each do |ip| -%> <%= ip %>; <% end -%>}; 
+  <% if @allow_transfer -%>allow-transfer {<% @allow_transfer.each do |ip| -%> <%= ip %>; <% end -%>};<% end -%> 
 <% elsif @zone_type == 'forward' -%>
-  forwarders {<% @allow_forwarder.each do |ip| -%> <%= ip %>; <% end -%>};
-<% end -%>
-<% if !@allow_forwarder.empty? -%>
+  <% if @allow_update -%>allow-update { key "<%= @allow_update %>"; };<% end -%>
+  <% if !@allow_forwarder.empty? -%>
   forward <%= @forward_policy %>;
   forwarders {<% @allow_forwarder.each do |ip| -%> <%= ip %>; <% end -%>};
-<% end -%>
-<% end -%>
-<% if @allow_update -%>
-  allow-update { key "<%= @allow_update %>"; };
-<% end -%>
-<% if @allow_update_forwarding -%>
-  allow-update-forwarding { key "<%= @allow_update_forwarding %>"; };
+  <% end -%>
 <% end -%>
 };
