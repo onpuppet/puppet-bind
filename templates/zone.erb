@@ -3,12 +3,15 @@ zone "<%= @zone %>" {
 <% if @zone_notify -%>
   notify <%= @zone_notify %>;
 <% end -%>
-  file "<%= @zone_file %>";
 <% if @zone_type == 'slave' -%>
+  file "<%= @zone_file %>";
   masters {<% @slave_masters.each do |ip| -%> <%= ip %>; <% end -%>};
 <% elsif @zone_type == 'master' -%>
+  file "<%= @zone_file %>";
 <% if @allow_transfer -%>
   allow-transfer {<% @allow_transfer.each do |ip| -%> <%= ip %>; <% end -%>}; 
+<% elsif @zone_type == 'forward' -%>
+  forwarders {<% @allow_forwarder.each do |ip| -%> <%= ip %>; <% end -%>};
 <% end -%>
 <% if !@allow_forwarder.empty? -%>
   forward <%= @forward_policy %>;
