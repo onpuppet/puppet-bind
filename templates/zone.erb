@@ -11,9 +11,9 @@ zone "<%= @zone %>" {
   <% end -%>
 <% elsif @zone_type == 'master' -%>
   file "<%= @zone_file %>";
-  <% if @allow_transfer -%>allow-transfer {<% @allow_transfer.each do |ip| -%> <%= ip %>; <% end -%>};<% end -%> 
-<% elsif @zone_type == 'forward' -%>
   <% if @allow_update -%>allow-update { key "<%= @allow_update %>"; };<% end -%>
+  <% if @allow_transfer -%>allow-transfer {<% @allow_transfer.each do |ip| -%> <%= ip %>; <% end -%>};<% end -%> 
+<% elsif @zone_type == 'forward' -%>  
   <% if !@allow_forwarder.empty? -%>
   forward <%= @forward_policy %>;
   forwarders {<% @allow_forwarder.each do |ip| -%> <%= ip %>; <% end -%>};
