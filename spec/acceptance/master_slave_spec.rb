@@ -54,19 +54,19 @@ describe 'bind' do
         bind::zone { 'example.com':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
           allow_transfer => [ '#{slave_ipv4}' ],
-          allow_update      => 'rndckey',
+          allow_update   => ['rndckey'],
         }
   
         bind::zone { '12.168.192.IN-ADDR.ARPA':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
           allow_transfer => [ '#{slave_ipv4}' ],
-          allow_update      => 'rndckey',
+          allow_update   => ['rndckey'],
         }
         
         bind::zone { '#{reverse_zone}.IN-ADDR.ARPA':
           nameservers    => ['ns1.example.com', 'ns2.example.com'],
           allow_transfer => [ '#{slave_ipv4}' ],
-          allow_update      => 'rndckey',
+          allow_update   => ['rndckey'],
         }
         
         bind::record::a {
@@ -104,21 +104,21 @@ describe 'bind' do
             nameservers   => ['ns1.example.com', 'ns2.example.com'],
             zone_type     => 'slave',
             slave_masters => [ '#{master_ipv4}' ],
-            allow_update_forwarding      => 'rndckey',
+            allow_update_forwarding => ['rndckey'],
           }
     
           bind::zone { '12.168.192.IN-ADDR.ARPA':
             nameservers   => ['ns1.example.com', 'ns2.example.com'],
             zone_type     => 'slave',
             slave_masters => [ '#{master_ipv4}' ],
-            allow_update_forwarding      => 'rndckey',
+            allow_update_forwarding => ['rndckey'],
           }
           
           bind::zone { '#{reverse_zone}.IN-ADDR.ARPA':
             nameservers   => ['ns1.example.com', 'ns2.example.com'],
             zone_type     => 'slave',
             slave_masters => [ '#{master_ipv4}' ],
-            allow_update_forwarding      => 'rndckey',
+            allow_update_forwarding => ['rndckey'],
           }
     EOS
 

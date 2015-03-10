@@ -65,14 +65,14 @@ class bind::config {
       'nameservers'             => keys($nameserver_hash),
       'zone_type'               => 'slave',
       'slave_masters'           => keys($bind::masters),
-      'allow_update_forwarding' => $bind::key,
+      'allow_update_forwarding' => [$bind::key],
     }
   } else {
     $defaults = {
       'nameservers'    => [$::fqdn, $bind::allow_notify],
       'zone_type'      => 'master',
       'allow_transfer' => [$bind::allow_notify],
-      'allow_update'   => $bind::key,
+      'allow_update'   => [$bind::key],
     }
   }
 
