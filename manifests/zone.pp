@@ -30,7 +30,8 @@ define bind::zone (
   $allow_update_forwarding = [],
   $slave_masters           = [],
   $zone_notify             = false,
-  $ensure                  = present,) {
+  $ensure                  = present,
+) {
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
   validate_array($allow_update)

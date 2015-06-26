@@ -5,12 +5,12 @@
 #
 class bind::service {
   $service_location = $::osfamily ? {
-    default => '/sbin/service',
-    Debian  => '/usr/sbin/service'
+    default  => '/sbin/service',
+    'Debian' => '/usr/sbin/service'
   }
 
   service { $bind::servicename:
-    ensure     => running,
+    ensure     => 'running',
     hasstatus  => true,
     enable     => true,
     restart    => "${service_location} ${bind::servicename} reload",

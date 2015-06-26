@@ -3,14 +3,9 @@
 # Wrapper for dns::record to set an A record, optionally
 # also setting a PTR at the same time.
 #
-define bind::record::a (
-  $zone,
-  $data,
-  $ttl = '',
-  $ptr = false,
-  $host = $name ) {
-
+define bind::record::a ($zone, $data, $ttl = '', $ptr = false, $host = $name) {
   $alias = "${host},A,${zone}"
+
   # FIXME -- use nsupdate instead of manipulating zonefile directly
   bind::record { $alias:
     zone => $zone,

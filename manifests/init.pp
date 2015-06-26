@@ -1,12 +1,111 @@
-# Class: bind
+# == Class: bind
 #
 # Install and enable an ISC BIND server.
 #
-# Sample Usage :
+# === Sample Usage :
 #  class { 'bind':
 #    lister_on_addr    => ['any'],
 #    listen_on_v6_addr => ['any'],
 #  }
+#
+# === Parameters
+#
+# [*acls*]
+#   Bind acl clause
+# [*masters*]
+#   Array of Bind master servers
+# [*listen_on_port*]
+#   The port used for IPv4
+# [*listen_on_addr*]
+#   Address to listen to for IPv4
+# [*listen_on_v6_port*]
+#   Address to listen to for IPv6
+# [*listen_on_v6_addr*]
+#   Address to listen to for IPv6
+# [*forwarders*]
+#   DNS servers to forward non authorative domains to
+# [*config_dir*]
+#   Directory where config files live
+# [*data_dir*]
+#   Directory where DNS data such as journal files are stored
+# [*directory*]
+#   Running directory and where temporary files are stored
+# [*managed_keys_directory*]
+#   Directory where managed keys are
+# [*hostname*]
+#   Hostname of server
+# [*server_id*]
+#   Id of server
+# [*version*]
+#   What version of Bind to install
+# [*log_level*]
+#   Level og logging verbosity
+# [*dump_file*]
+#   Location of Bind dump file
+# [*statistics_file*]
+#   Location of statistics file
+# [*memstatistics_file*]
+#   Location of memstatistics file
+# [*allow_query*]
+#   Hosts and keys allowed to query server
+# [*allow_query_cache*]
+#   Hosts and keys allowed to modify cache
+# [*recursion*]
+#   Enable recursion
+# [*allow_recursion*]
+#   Hosts and keys allowed to do recursive lookups
+# [*allow_transfer*]
+#   Hosts and keys allowed to do zone transfer
+# [*check_names*]
+#   Enable bind check_names flag
+# [*extra_options*]
+#   Custom options to bind config
+# [*dnssec_enable*]
+#   Enable dnssec
+# [*dnssec_validation*]
+#   Dnssec validation config option
+# [*dnssec_lookaside*]
+#   Dnssec lookaside option
+# [*zones*]
+#   Hash of zones to configure for bind
+# [*includes*]
+#   Config files to include
+# [*views*]
+#   Bind views config option
+# [*service_reload*]
+#   Enable service reload on config update
+# [*package*]
+#   Bind package name to install
+# [*bindlogdir*]
+#   Directory to store log files in
+# [*servicename*]
+#   Name of bind service
+# [*source*]
+#   Configuration source file
+# [*template*]
+#   Configuration template
+# [*config_file*]
+#   Configuration file path
+# [*config_file_mode*]
+#   File mode for config file
+# [*config_file_owner*]
+#   Config file owner
+# [*config_file_group*]
+#   Config file owning group
+# [*key*]
+#   Name of rndc update key
+# [*secret*]
+#   Key secret (password) of rndc key
+# [*controls*]
+#   Array of servers allowed for control function
+# [*inet*]
+#   Interface to bind to
+# [*inet_port*]
+#   Interface port to bind to
+# [*bindkey_file*]
+#   File location of bind key
+# [*allow_notify*]
+#   Array of hosts allowed the notify keyword
 #
 class bind (
   $acls                   = $bind::params::acls,
@@ -56,7 +155,8 @@ class bind (
   $inet                   = $bind::params::inet,
   $inet_port              = $bind::params::inet_port,
   $bindkey_file           = $bind::params::bindkey_file,
-  $allow_notify           = $bind::params::allow_notify,) inherits bind::params {
+  $allow_notify           = $bind::params::allow_notify,
+) inherits bind::params {
   class { 'bind::install': } ->
   class { 'bind::config': } ~>
   class { 'bind::service': } ->
