@@ -2,6 +2,7 @@ require 'spec_helper_acceptance'
 require 'spec/dns'
 require 'spec/nsupdate'
 require 'csv'
+require 'tempfile'
 
 describe 'bind' do
 
@@ -48,7 +49,7 @@ describe 'bind' do
           key               => 'rndckey',
           secret            => 'Kpllul1kWrwwsnZ7VWRq5g==', 
           allow_notify      => [ '#{slave_ipv4}' ],
-          forwarders        => [ '144.254.71.184' ],
+          forwarders        => [ '8.8.8.8' ],
         }
         
         bind::zone { 'example.com':
@@ -97,7 +98,7 @@ describe 'bind' do
             key        => 'rndckey',
             secret     => 'Kpllul1kWrwwsnZ7VWRq5g==', 
             masters    => { 'masterlist' => [ '#{master_ipv4}' ] },
-            forwarders => [ '144.254.71.184' ]
+            forwarders => [ '8.8.8.8' ]
           }
           
           bind::zone { 'example.com':
@@ -135,10 +136,6 @@ describe 'bind' do
     it { should be_running }
     it { should be_enabled }
   end
-
-  ##### Inspired by: http://sharknet.us/2014/02/06/infrastructure-testing-with-ansible-and-serverspec-part-2/
-
-  require 'tempfile'
 
   file = Tempfile.new('rndc.key')
   file.write('key rndckey {

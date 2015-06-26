@@ -56,3 +56,4 @@ node slave {
     sudo usermod -G docker jenkins
     bundle exec rake test
     bundle exec rake acceptance
+    

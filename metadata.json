@@ -45,9 +45,9 @@
   ],
   "description": "Install and enable a BIND DNS server, create and manage DNS zone files.",
   "license": "Apache 2.0",
-  "name": "cisco-bind",
-  "project_page": "https://github.com/CiscoSystems/puppet-bind",
-  "source": "git://github.com/CiscoSystems/puppet-bind",
+  "name": "yuav-bind",
+  "project_page": "https://github.com/Yuav/puppet-bind",
+  "source": "git://github.com/Yuav/puppet-bind",
   "summary": "BIND DNS server module",
   "types": [],
   "version": "1.0.0"
