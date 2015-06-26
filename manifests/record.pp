@@ -2,6 +2,25 @@
 #
 # This is a private class to arbitary dns records.
 #
+# === Parameters
+#
+# [*zone*]
+#   Zone name for record
+# [*host*]
+#   Hostname
+# [*data*]
+#   Data to set for host
+# [*record*]
+#   Type of DNS record
+# [*dns_class*]
+#   Class type of record
+# [*ttl*]
+#   Time to live for record
+# [*preference*]
+#   Preference for record
+# [*order*]
+#   Order number for record
+#
 define bind::record (
   $zone,
   $host,

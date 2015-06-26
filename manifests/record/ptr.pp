@@ -2,6 +2,17 @@
 #
 # Wrapper for dns::record to set PTRs
 #
+# === Parameters
+#
+# [*zone*]
+#   Zone name for record
+# [*data*]
+#   Data to set for host
+# [*ttl*]
+#   Time to live for record
+# [*host*]
+#   Hostname for record
+#
 define bind::record::ptr (
   $zone,
   $data,

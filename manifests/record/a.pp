@@ -3,6 +3,19 @@
 # Wrapper for dns::record to set an A record, optionally
 # also setting a PTR at the same time.
 #
+# === Parameters
+#
+# [*zone*]
+#   Zone name for record
+# [*data*]
+#   Data to set for host
+# [*ttl*]
+#   Time to live for record
+# [*ptr*]
+#   Generate PTR record as well
+# [*host*]
+#   Hostname for record
+#
 define bind::record::a ($zone, $data, $ttl = '', $ptr = false, $host = $name) {
   $alias = "${host},A,${zone}"
 

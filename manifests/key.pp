@@ -11,6 +11,15 @@
 # to Bind9 documentation regarding dynamic update setup and
 # key pair generation.
 #
+# === Parameters
+#
+# [*secret*]
+#   Key secret (password) of rndc key
+# [*ensure*]
+#   Ensure keyword for key file
+# [*algorithm*]
+#   Algorithm use for key
+#
 define bind::key ($secret, $ensure = present, $algorithm = 'hmac-md5',) {
   validate_string($ensure)
   validate_re($ensure, ['present', 'absent'], "\$ensure must be either 'present' or 'absent', got '${ensure}'")

@@ -12,6 +12,46 @@
 #      zone_notify    => 'yes',
 #      allow_update   => $allow_update,
 #    }
+#
+# === Parameters
+#
+# [*soa*]
+#   SOA for zone
+# [*soa_email*]
+#   Email for SOA
+# [*zone_ttl*]
+#   Default ttl for zone
+# [*zone_refresh*]
+#   Zone refresh parameter
+# [*zone_retry*]
+#   Zone retry parameter
+# [*zone_expire*]
+#   Zone expire parameter
+# [*zone_minimum*]
+#   Zone minimum parameter
+# [*nameservers*]
+#   Nameserver authorative for this zone
+# [*reverse*]
+#   If zone type is reverse set this to true
+# [*zone_type*]
+#   Type of zone
+# [*allow_transfer*]
+#   Array of hosts allowed to do zone transfer
+# [*allow_forwarder*]
+#   Array of hosts allowed for zone forwarder
+# [*forward_policy*]
+#   Zone forward policy
+# [*allow_update*]
+#   Array of hosts and keys allowed to update
+# [*allow_update_forwarding*]
+#   Array of hosts and keys allowed to update with forwarding to master
+# [*slave_masters*]
+#   Array of slaves for zone
+# [*zone_notify*]
+#   Allow zone notify
+# [*ensure*]
+#   Ensure keyword for zone file
+#
 define bind::zone (
   $soa                     = $::fqdn,
   $soa_email               = "root.${::fqdn}",
