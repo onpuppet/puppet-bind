@@ -56,7 +56,7 @@ class bind::params {
     default  => '/var/named'
   }
 
-  $source = ''
+  $source = undef
 
   $template = 'bind/named.conf.erb'
 
