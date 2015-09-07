@@ -4,7 +4,7 @@
 #
 class bind::config {
   if ($bind::source and $bind::template) {
-    fail('Bind: cannot set both source and template')
+    fail("Bind: cannot set both source (${bind::source}) and template (${bind::template})")
   }
 
   $manage_file_source = $bind::source ? {
