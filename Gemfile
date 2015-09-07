@@ -21,7 +21,8 @@ group :development do
   gem "travis-lint"
   gem "beaker"
   gem "beaker-rspec"
-  gem "docker-api", 1.16
+#  gem "docker-api", 1.16
+  gem "docker-api"
   gem "vagrant-wrapper"
   gem "puppet-blacksmith"
   gem "guard-rake"

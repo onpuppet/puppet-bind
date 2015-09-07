@@ -82,6 +82,7 @@
 		<exec executable="bundle" failonerror="true">
 			<env key="CI_REPORTS" value="${basedir}/results/acceptance" />
 			<env key="BEAKER_set" value="${nodeset}" />
+                        <env key="BEAKER_debug" value="true" />
 			<arg line="exec rake ci:setup:rspec acceptance" />
 		</exec>
 	</target>
