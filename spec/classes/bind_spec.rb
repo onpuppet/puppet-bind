@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'bind' do
 
   let(:title) { 'bind' }
+  let(:parser) { 'future' }
   let(:node) { 'rspec.node1' }
   let(:facts) { { :ipaddress => '10.0.0.10', :concat_basedir => '/tmp' } }
   let(:params) { { :config_file => '/etc/bind/named.conf', :package => 'bind', 'servicename' => 'bind' } }
@@ -44,18 +45,34 @@ describe 'bind' do
         'example.org' => { 'zone_type' => 'slave', 'slave_masters' => ['192.0.2.1', '198.51.100.1'] },
         },
         :includes => [ '/etc/myzones.conf' ],
+        :server_id => '1',
+        :key          => 'ddnskey',
+        :allow_notify => ['1.1.1.1'],
+        :forwarders   => ['8.8.8.8', '8.8.4.4'],
+        :controls     => ['2.2.2.2', '3.3.3.3'],
+        :secret       => 'ddnssecret',
       }
     }
-
+    
     it 'should generate the bind configuration' do
       expect { should contain_file('/etc/named.conf')}
       content = catalogue.resource('file', '/etc/named.conf').send(:parameters)[:content]
       content.should_not be_empty
       content.should match('acl rfc1918')
+      content.should match('server-id "31"')
       content.should match('masters mymasters')
       content.should match('include "/etc/myzones.conf"')
+      content.should match('ddnskey')
+      content.should match('1.1.1.1')
+      content.should match('2.2.2.2')
+      content.should match('3.3.3.3')
+      content.should match('8.8.8.8')
+      content.should match('8.8.4.4')
+      content.should_not match('hostname')
+      content.should_not match('undef')
+      content.should_not match('zone "example.com"')
     end
-
+    
     it 'should have concat resources for zones' do
       should contain_concat('/etc/bind/named.conf.local')
       should contain_concat__fragment('named.conf.local.example.com.include').with_content(/zone "example.com"/).with_target('/etc/bind/named.conf.local')

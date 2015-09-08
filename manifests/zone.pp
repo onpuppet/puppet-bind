@@ -118,7 +118,7 @@ define bind::zone (
     $zone_serial = inline_template('<%= Time.now.to_i %>')
 
     exec { "bump-${zone}-serial":
-      command     => "sed '8s/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
+      command     => "sed 's/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,

@@ -280,8 +280,6 @@ GEM
       puppet-lint (~> 1.1)
     puppet-lint-strict_indent-check (2.0.1)
       puppet-lint (~> 1.0)
-    puppet-lint-trailing_newline-check (1.0.0)
-      puppet-lint (~> 1.0)
     puppet-lint-unquoted_string-check (0.2.5)
       puppet-lint (~> 1.0)
     puppet-lint-variable_contains_upcase (1.0.0)
@@ -390,7 +388,6 @@ DEPENDENCIES
   puppet-lint-absolute_template_path
   puppet-lint-param-docs
   puppet-lint-strict_indent-check
-  puppet-lint-trailing_newline-check
   puppet-lint-unquoted_string-check
   puppet-lint-variable_contains_upcase
   puppet-syntax

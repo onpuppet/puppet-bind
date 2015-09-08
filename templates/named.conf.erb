@@ -3,8 +3,8 @@
 // WARNING: Puppet managed, do not edit!
 //
 
-<% if !@acls.empty? -%>
-<% @acls.sort_by {|key, value| key}.each do |key,value| -%>
+<% if !scope['bind::acls'].nil? && !scope['bind::acls'].empty? -%>
+<% scope['bind::acls'].sort_by {|key, value| key}.each do |key,value| -%>
 acl <%= key %> {
 <% value.each do |line| -%>
     <%= line %>;
@@ -13,8 +13,8 @@ acl <%= key %> {
 
 <% end -%>
 <% end -%>
-<% if !@masters.empty? -%>
-<% @masters.sort_by {|key, value| key}.each do |key,value| -%>
+<% if !scope['bind::masters'].nil? and !scope['bind::masters'].empty? -%>
+<% scope['bind::masters'].sort_by {|key, value| key}.each do |key,value| -%>
 masters <%= key %> {
 <% value.each do |line| -%>
     <%= line %>;
@@ -24,84 +24,84 @@ masters <%= key %> {
 <% end -%>
 <% end -%>
 options {
-<% if @listen_on_port -%>
-    listen-on port <%= @listen_on_port %> { <%= @listen_on_addr.join("; ") %>; };
+<% if scope['bind::listen_on_port'] -%>
+    listen-on port <%= scope['bind::listen_on_port'] %> { <%= scope['bind::listen_on_addr'].join("; ") %>; };
 <% end -%>
-<% if @listen_on_v6_port -%>
-    listen-on-v6 port <%= @listen_on_v6_port %> { <%= @listen_on_v6_addr.join("; ") %>; };
+<% if scope['bind::listen_on_v6_port'] -%>
+    listen-on-v6 port <%= scope['bind::listen_on_v6_port'] %> { <%= scope['bind::listen_on_v6_addr'].join("; ") %>; };
 <% end -%>
-<% if !@forwarders.empty? -%>
-    forwarders { <%= @forwarders.join("; ") %>; };
+<% if !scope['bind::forwarders'].nil? and !scope['bind::forwarders'].empty? -%>
+    forwarders { <%= scope['bind::forwarders'].join("; ") %>; };
 <% end -%>
-    directory "<%= @directory %>";
-<% if @managed_keys_directory -%>
-    managed-keys-directory "<%= @managed_keys_directory %>";
+    directory "<%= scope['bind::directory'] %>";
+<% if scope['bind::managed_keys_directory'].is_a?(String) -%>
+    managed-keys-directory "<%= scope['bind::managed_keys_directory'] %>";
 <% end -%>
-<% if @hostname -%>
-    hostname "<%= @hostname %>";
+<% if scope['bind::hostname'].is_a?(String) -%>
+    hostname "<%= scope['bind::hostname'] %>";
 <% end -%>
-<% if @server_id -%>
-    server-id "<% @server_id.each_byte do |byte| -%><%= byte.to_s(base=16) %><% end -%>";
+<% if scope['bind::server_id'].is_a?(String) -%>
+    server-id "<% scope['bind::server_id'].each_byte do |byte| -%><%= byte.to_s(base=16) %><% end -%>";
 <% end -%>
-<% if @version -%>
-    version "<%= @version %>";
+<% if scope['bind::version'].is_a?(String) -%>
+    version "<%= scope['bind::version'] %>";
 <% end -%>
-<% if @dump_file -%>
-    dump-file "<%= @dump_file %>";
+<% if scope['bind::dump_file'] -%>
+    dump-file "<%= scope['bind::dump_file'] %>";
 <% end -%>
-<% if @statistics_file -%>
-    statistics-file "<%= @statistics_file %>";
+<% if scope['bind::statistics_file'] -%>
+    statistics-file "<%= scope['bind::statistics_file'] %>";
 <% end -%>
-<% if @memstatistics_file -%>
-    memstatistics-file "<%= @memstatistics_file %>";
+<% if scope['bind::memstatistics_file'] -%>
+    memstatistics-file "<%= scope['bind::memstatistics_file'] %>";
 <% end -%>
-<% if !@allow_query.empty? -%>
-    allow-query { <%= @allow_query.join("; ") %>; };
+<% if !scope['bind::allow_query'].nil? and !scope['bind::allow_query'].empty? -%>
+    allow-query { <%= scope['bind::allow_query'].join("; ") %>; };
 <% end -%>
-<% if !@allow_query_cache.empty? -%>
-    allow-query-cache { <%= @allow_query_cache.join("; ") %>; };
+<% if !scope['bind::allow_query_cache'].nil? and !scope['bind::allow_query_cache'].empty? -%>
+    allow-query-cache { <%= scope['bind::allow_query_cache'].join("; ") %>; };
 <% end -%>
-    recursion <%= @recursion %>;
-<% if !@allow_recursion.empty? -%>
-    allow-recursion { <%= @allow_recursion.join("; ") %>; };
+    recursion <%= scope['bind::recursion'] %>;
+<% if !scope['bind::allow_recursion'].nil? and !scope['bind::allow_recursion'].empty? -%>
+    allow-recursion { <%= scope['bind::allow_recursion'].join("; ") %>; };
 <% end -%>
-<% if !@allow_transfer.empty? -%>
-    allow-transfer { <%= @allow_transfer.join("; ") %>; };
+<% if !scope['bind::allow_transfer'].nil? and !scope['bind::allow_transfer'].empty? -%>
+    allow-transfer { <%= scope['bind::allow_transfer'].join("; ") %>; };
 <% end -%>
-<% if !@allow_notify.empty? -%>
-    allow-notify {<% @allow_notify.each do |ip| -%> <%= ip %>;<% end -%> };
+<% if !scope['bind::allow_notify'].nil? and !scope['bind::allow_notify'].empty? -%>
+    allow-notify {<% scope['bind::allow_notify'].each do |ip| -%> <%= ip %>;<% end -%> };
 <% end -%>
-<% if !@check_names.empty? -%>
-<% @check_names.each do |line| -%>
+<% if !scope['bind::check_names'].nil? and !scope['bind::check_names'].empty? -%>
+<% scope['bind::check_names'].each do |line| -%>
     check-names <%= line %>;
 <% end -%>
 <% end -%>
 
-<% if !@extra_options.empty? -%>
-<% @extra_options.sort_by {|key, value| key}.each do |key,value| -%>
+<% if !scope['bind::extra_options'].nil? and !scope['bind::extra_options'].empty? -%>
+<% scope['bind::extra_options'].sort_by {|key, value| key}.each do |key,value| -%>
     <%= key %> <%= value %>;
 <% end -%>
 
 <% end -%>
-    dnssec-enable <%= @dnssec_enable %>;
-    dnssec-validation <%= @dnssec_validation %>;
-    dnssec-lookaside <%= @dnssec_lookaside %>;
+    dnssec-enable <%= scope['bind::dnssec_enable'] %>;
+    dnssec-validation <%= scope['bind::dnssec_validation'] %>;
+    dnssec-lookaside <%= scope['bind::dnssec_lookaside'] %>;
 
     /* Path to ISC DLV key */
-    bindkeys-file "<%= @bindkey_file %>";
+    bindkeys-file "<%= scope['bind::bindkey_file'] %>";
 };
 
 logging {
     channel main_log {
         file "/var/log/named/named.log" versions 3 size 5m;
-        severity <%= @log_level %>;
+        severity <%= scope['bind::log_level'] %>;
         print-time yes;
         print-severity yes;
         print-category yes;
     };
     channel query_log {
         file "/var/log/named/query.log" versions 3 size 5m;
-        severity <%= @log_level %>;
+        severity <%= scope['bind::log_level'] %>;
         print-time yes;
         print-severity yes;
         print-category yes;
@@ -117,27 +117,27 @@ logging {
     };
 };
 
-<% if !@controls.empty? -%>
+<% if !scope['bind::controls'].nil? and !scope['bind::controls'].empty? -%>
 include "/etc/bind/rndc.key";
 
 controls {
-         inet <%= @inet %> port <%= @inet_port %>
-         allow {<% @controls.each do |ip| -%><%= ip %>; <% end -%>}
-         keys  { <% if @key -%>"<%= @key %>"; "rndc-key";<% else -%>"rndc-key";<% end -%> };
+         inet <%= scope['bind::inet'] %> port <%= scope['bind::inet_port'] %>
+         allow { <% scope['bind::controls'].each do |ip| -%><%= ip %>; <% end -%>}
+         keys  { <% if scope['bind::key'] -%>"<%= scope['bind::key'] %>"; "rndc-key";<% else -%>"rndc-key";<% end -%> };
 };
 <% end -%>
 
-<% if !@views.empty? -%>
+<% if !scope['bind::views'].nil? and !scope['bind::views'].empty? -%>
 
-<% @views.sort_by {|key,value| key}.each do |key,value| -%>
+<% scope['bind::views'].sort_by {|key,value| key}.each do |key,value| -%>
 <% valid_keys = %w(allow-notify allow-query allow-recursion allow-transfer allow-update-forwarding forwarders match-clients match-destinations match-recursive-only) -%>
 view "<%= key %>" {
 <% valid_keys.sort.each do |valid_key| -%>
-<% if value[valid_key] and !value[valid_key].empty? -%>
+<% if value[valid_key] and !value[valid_key].nil? and !value[valid_key].empty? -%>
     <%= valid_key %> { <%= value[valid_key].join('; ') %>; };
 <% end -%>
 <% end -%>
-<% if value['includes'] and !value['includes'].empty? -%>
+<% if value['includes'] and !value['includes'].nil? and !value['includes'].empty? -%>
 <% value['includes'].each do |filename| -%>
     include "<%= filename %>";
 <% end -%>
@@ -146,24 +146,14 @@ view "<%= key %>" {
 <% end -%>
 <% else -%><%# end views, start no views -%>
 
-<% if !@zones.empty? -%>
-<% @zones.sort_by {|key, value| key}.each do |key,value| -%>
-zone "<%= key %>" IN {
-<% value.each do |line| -%>
-    <%= line %>;
-<% end -%>
-};
-
-<% end -%>
-<% end -%>
 include "/etc/bind/named.conf.local";
 include "/etc/bind/named.conf.default-zones";
-<% if @recursion == 'yes' -%>
+<% if scope['bind::recursion'] == 'yes' -%>
 include "/etc/bind/zones.rfc1918";
 <% end -%>
 <% end -%><%# end no views -%>
-<% if !@includes.empty? -%>
-<% @includes.each do |filename| -%>
+<% if !scope['bind::includes'].nil? and !scope['bind::includes'].empty? -%>
+<% scope['bind::includes'].each do |filename| -%>
 include "<%= filename %>";
 <% end -%>
 <% end -%>

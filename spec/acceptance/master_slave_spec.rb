@@ -88,8 +88,8 @@ describe 'bind' do
     EOS
 
     # Run it twice and test for idempotency
-    expect(apply_manifest_on(master, pp).exit_code).to_not(eq(1))
-    expect(apply_manifest_on(master, pp).exit_code).to(eq(0))
+    expect(apply_manifest_on(master, pp, :catch_failures => true).exit_code).to_not(eq(1))
+    expect(apply_manifest_on(master, pp, :catch_changes => true).exit_code).to(eq(0))
   end
 
   it 'should install slave with no errors' do
@@ -121,11 +121,25 @@ describe 'bind' do
             slave_masters => [ '#{master_ipv4}' ],
             allow_update_forwarding => ['rndckey'],
           }
+          
+          bind::record::a {
+            'ns1':
+              zone => 'example.com',
+              data => '#{master_ipv4}',
+              ptr  => true
+          }
+          
+          bind::record::a {
+            'ns2':
+              zone => 'example.com',
+              data => '#{slave_ipv4}',
+              ptr  => true
+          }
     EOS
 
     # Run it twice and test for idempotency
-    expect(apply_manifest_on(database, pp).exit_code).to_not(eq(1))
-    expect(apply_manifest_on(database, pp).exit_code).to(eq(0))
+    expect(apply_manifest_on(database, pp, :catch_failures => true).exit_code).to_not(eq(1))
+    expect(apply_manifest_on(database, pp, :catch_changes => true).exit_code).to(eq(0))
   end
 
   describe package(package_name) do
