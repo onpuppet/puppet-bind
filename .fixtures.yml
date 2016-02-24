@@ -1,6 +1,9 @@
 fixtures:
+    forge_modules:
+        concat:
+            repo: "puppetlabs/concat"
+            ref: "1.2.5"
     repositories:
         "stdlib": "https://github.com/puppetlabs/puppetlabs-stdlib"
-        "concat": "https://github.com/puppetlabs/puppetlabs-concat"
     symlinks:
         "bind": "#{source_dir}"

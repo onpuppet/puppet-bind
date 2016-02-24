@@ -42,7 +42,6 @@ class bind::config {
   }
 
   concat::fragment { 'named.conf.local.header':
-    ensure  => present,
     target  => "${bind::config_dir}/named.conf.local",
     order   => 1,
     content => "// File managed by Puppet.\n",
