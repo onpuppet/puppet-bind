@@ -24,6 +24,7 @@ class bind::config {
     mode    => $bind::config_file_mode,
     source  => $manage_file_source,
     content => $manage_file_content,
+    notify  => Exec['named-checkconf'],
   }
 
   exec { 'named-checkconf':
