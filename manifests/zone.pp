@@ -102,7 +102,7 @@ define bind::zone (
       owner   => $::bind::config_file_owner,
       group   => $::bind::config_file_group,
       mode    => '0644',
-      require => [Class['concat::setup'], Package[$::bind::package]],
+      require => Package[$::bind::package],
       notify  => Exec["bump-${zone}-serial"],
     }
 
