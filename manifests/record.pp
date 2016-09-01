@@ -37,7 +37,7 @@ define bind::record (
   concat::fragment{"${zone}.${name}.record":
     target  => $zone_file_stage,
     order   => $order,
-    content => template("${module_name}/zone_record.erb")
+    content => template("${module_name}/zone_record.erb"),
   }
 
 }

@@ -103,13 +103,13 @@ define bind::zone (
       group   => $::bind::config_file_group,
       mode    => '0644',
       require => [Class['concat::setup'], Package[$::bind::package]],
-      notify  => Exec["bump-${zone}-serial"]
+      notify  => Exec["bump-${zone}-serial"],
     }
 
     concat::fragment { "${name}.soa":
       target  => $zone_file_stage,
       order   => 1,
-      content => template("${module_name}/zone_file.erb")
+      content => template("${module_name}/zone_file.erb"),
     }
 
     # Generate real zone from stage file through replacement _SERIAL_ template

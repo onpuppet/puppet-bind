@@ -18,7 +18,7 @@ class bind::config {
   }
 
   file { $bind::config_file:
-    ensure  => present,
+    ensure  => 'file',
     owner   => $bind::config_file_owner,
     group   => $bind::config_file_group,
     mode    => $bind::config_file_mode,
@@ -50,7 +50,7 @@ class bind::config {
 
   # Zones
   file { $bind::data_dir:
-    ensure => directory,
+    ensure => 'directory',
     owner  => $bind::config_file_owner,
     group  => $bind::config_file_group,
     mode   => '0775',
@@ -58,7 +58,7 @@ class bind::config {
 
   if empty($bind::masters) {
     $fqdn_hash = {
-      "${::fqdn} " => $::fqdn
+      "${::fqdn} " => $::fqdn,
     }
     $nameserver_hash = merge($bind::masters, $fqdn_hash)
     $defaults = {

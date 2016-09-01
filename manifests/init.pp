@@ -160,9 +160,9 @@ class bind (
 
   validate_string($server_id)
 
-  class { 'bind::install': } ->
-  class { 'bind::config': } ~>
-  class { 'bind::service': } ->
-  Class['bind']
+  class { '::bind::install': } ->
+  class { '::bind::config': } ~>
+  class { '::bind::service': } ->
+  Class['::bind']
 }
 

@@ -6,9 +6,17 @@
 		<antcall target="acceptance" />
 	</target>
 
-    <target name="clean">
-        <delete dir="${basedir}/spec/fixtures/modules/concat"/>
-    </target>
+	<target name="clean">
+		<delete includeemptydirs="true" removeNotFollowedSymlinks="true" failonerror="false">
+			<fileset followSymlinks="no" dir="${basedir}/spec/fixtures/modules" defaultexcludes="no">
+				<include name="**/*" />
+				<exclude name="**/*~" />
+				<exclude name="**/#*#" />
+				<exclude name="**/.#*" />
+				<exclude name="**/%*%" />
+			</fileset>
+		</delete>
+	</target>
 
 	<target name="rvm" description="Prepare RVM">
 		<exec executable="${user.home}/.rvm/scripts/rvm" />
@@ -44,11 +52,11 @@
 	</target>
 
 	<target name="acceptance" description="Run acceptance tests in parallel">
-		<script language="javascript"> <![CDATA[ 
-			importClass(java.io.File);
+		<script language="javascript">
+			<![CDATA[ 
 		    fs = project.createDataType("fileset");
 		    dir = "spec/acceptance/nodesets";
-		    fs.setDir( new File( dir ) );
+		    fs.setDir( new java.io.File( dir ) );
 		    fs.setIncludes( "**/*.yml" );
 	
 		    // create parallel Task via Ant API
@@ -72,18 +80,18 @@
 				
 				parent.addTask(ac);
 			}
-			parent.perform();]]> 
+			parent.perform();]]>
 		</script>
 	</target>
-	
+
 	<target name="acceptance-build">
 		<echo message="Starting nodeset: ${nodeset}" />
 		<property environment="env" />
 		<exec executable="bundle" failonerror="true">
 			<env key="CI_REPORTS" value="${basedir}/results/acceptance" />
 			<env key="BEAKER_set" value="${nodeset}" />
-                        <env key="BEAKER_debug" value="true" />
 			<arg line="exec rake ci:setup:rspec acceptance" />
 		</exec>
 	</target>
+
 </project>

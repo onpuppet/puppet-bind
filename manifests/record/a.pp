@@ -24,7 +24,7 @@ define bind::record::a ($zone, $data, $ttl = '', $ptr = false, $host = $name) {
     zone => $zone,
     host => $host,
     ttl  => $ttl,
-    data => $data
+    data => $data,
   }
 
   if $ptr {
@@ -35,7 +35,7 @@ define bind::record::a ($zone, $data, $ttl = '', $ptr = false, $host = $name) {
     bind::record::ptr { "${octet}.${reverse_zone}":
       host => $octet,
       zone => $reverse_zone,
-      data => "${host}.${zone}"
+      data => "${host}.${zone}",
     }
   }
 }

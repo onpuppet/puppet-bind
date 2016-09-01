@@ -43,6 +43,31 @@
       "version_requirement": "\u003e\u003d2.4.0"
     }
   ],
+    "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04",
+        "16.04"
+      ]
+    }
+  ],
   "description": "Install and enable a BIND DNS server, create and manage DNS zone files.",
   "license": "Apache 2.0",
   "name": "yuav-bind",
