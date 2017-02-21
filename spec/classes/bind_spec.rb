@@ -80,19 +80,19 @@ describe 'bind' do
           it 'should generate the bind configuration' do
             expect { should contain_file('/etc/named.conf')}
             content = catalogue.resource('file', '/etc/named.conf').send(:parameters)[:content]
-            content.should match('acl rfc1918')
-            content.should match('server-id "31"')
-            content.should match('masters mymasters')
-            content.should match('include "/etc/myzones.conf"')
-            content.should match('ddnskey')
-            content.should match('1.1.1.1')
-            content.should match('2.2.2.2')
-            content.should match('3.3.3.3')
-            content.should match('8.8.8.8')
-            content.should match('8.8.4.4')
-            content.should_not match('hostname')
-            content.should_not match('undef')
-            content.should_not match('zone "example.com"')
+            expect { content.should match('acl rfc1918') }
+            expect { content.should match('server-id "31"') }
+            expect { content.should match('masters mymasters') }
+            expect { content.should match('include "/etc/myzones.conf"') }
+            expect { content.should match('ddnskey') }
+            expect { content.should match('1.1.1.1') }
+            expect { content.should match('2.2.2.2') }
+            expect { content.should match('3.3.3.3') }
+            expect { content.should match('8.8.8.8') }
+            expect { content.should match('8.8.4.4') }
+            expect { content.should_not match('hostname') }
+            expect { content.should_not match('undef') }
+            expect { content.should_not match('zone "example.com"') }
           end
 
           case facts[:osfamily]
