@@ -519,6 +519,9 @@ RSpec/RepeatedDescription:
 RSpec/NestedGroups:
   Enabled: False
 
+RSpec/MultipleExpectations:
+  Enabled: False
+
 # disable Yaml safe_load. This is needed to support ruby2.0.0 development envs
 Security/YAMLLoad:
   Enabled: false
