@@ -1,46 +1,13 @@
 {
   "author": "Jon Skarpeteig, Daniel Sunde",
-  "checksums": {
-    "spec/spec_helper_acceptance.rb": "5eb993d3d041024882bafa836c00b1a5",
-    "spec/fixtures/manifests/site.pp": "d41d8cd98f00b204e9800998ecf8427e",
-    "spec/acceptance/standard_spec.rb": "5ccbe3cba17288ab80649a9ddc71ee94",
-    "manifests/record/ptr.pp": "a0b7ae33fe9924e4e6c600ce479374a0",
-    "spec/classes/bind_server_spec.rb": "6eb1f326c12e8d13336360058ba0d140",
-    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
-    "spec/spec_helper.rb": "447d455444cf2400408ac0593d98eeb2",
-    "manifests/params.pp": "d8fb3f91808f67bef09bcc976a828c1e",
-    "files/named.empty": "825c08bd73c3b6a2c95f671477d69749",
-    "manifests/init.pp": "e1a2dcc726080afcacedf71377e4b4ac",
-    "spec/reports/SPEC-bind-server-file.xml": "8900083a3a73ce17bcd5b825e5aca493",
-    "spec/erb-lint.sh": "b2c4517c9e017c26c5f9f9952a9cb5e4",
-    "manifests/zone.pp": "8410cf912cf09c217764ef2901c68d7c",
-    "spec/reports/SPEC-bind-server-conf.xml": "c0d0ebc4d241461c78e1548ac6d56c4c",
-    "README.md": "e7170846f993e6ea8a607b5716c5c110",
-    "Rakefile": "2d04aa00680bf8c32dda04f3dec7e71c",
-    "Gemfile": "41f9c36fdbb19d3a66ebda8b285b57ca",
-    "spec/defines/bind_server_file_spec.rb": "ae8f4bc408c691f1f26c0b1e34041ddd",
-    "spec/defines/bind_server_conf_spec.rb": "75867c71d150c421330148d15b8096d4",
-    "manifests/record.pp": "f7e098874aa3829e19ca786bc2fb6281",
-    "templates/named.conf.erb": "7f3d4a642c26e8bb04d0e763fdc7599c",
-    "spec/acceptance/nodesets/default.yml": "bd7dcdb2e7466b085acb7f7ddecbae9a",
-    "build.xml": "2f19db9ec78c599751cc88293f4c39dc",
-    "templates/zone_record.erb": "285e12b645beace9d789bc7307a0398c",
-    "Modulefile": "1ed2572a645b34e92771e9bfbce3dcac",
-    "tests/init.pp": "35325ea3d13bde4e92ca9e983c68215c",
-    "templates/zone.erb": "046b05e0f64c5dd0001485a9242a8dc4",
-    "spec/reports/SPEC-bind-server.xml": "4ca3fa7eee3f4d18d463a9d4b55a666b",
-    "templates/zone_file.erb": "d8564255f563d46481295fee73716940",
-    "manifests/record/a.pp": "7abb5bad478a505dac952ea765ada93c",
-    "Gemfile.lock": "c0689dc8c2b5f19037ccadf8c62d6ded"
-  },
   "dependencies": [
     {
-      "name": "puppetlabs/concat",
-      "version_requirement": "\u003e\u003d1.0.0"
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.6.0 < 6.0.0"
     },
     {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": "\u003e\u003d2.4.0"
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.2.5 < 6.0.0"
     }
   ],
     "operatingsystem_support": [
@@ -69,11 +36,10 @@
     }
   ],
   "description": "Install and enable a BIND DNS server, create and manage DNS zone files.",
-  "license": "Apache 2.0",
-  "name": "yuav-bind",
-  "project_page": "https://github.com/Yuav/puppet-bind",
-  "source": "git://github.com/Yuav/puppet-bind",
+  "license": "Apache-2.0",
+  "name": "onpuppet-bind",
+  "project_page": "https://github.com/onpuppet/puppet-bind",
+  "source": "git://github.com/onpuppet/puppet-bind",
   "summary": "BIND DNS server module",
-  "types": [],
   "version": "1.0.0"
 }

@@ -15,57 +15,57 @@ class Nsupdate
 
     @resolver = Resolv::DNS.new(:nameserver => @server)
     case type
-    when "A"
+    when 'A'
       #nsupdate "zone #{forward_domain}"
       nsupdate "update add #{fqdn}. #{ttl} #{type} #{value}"
-    when "AAAA"
+    when 'AAAA'
         #nsupdate "zone #{forward_domain}"
         nsupdate "update add #{fqdn}. #{ttl} #{type} #{value}"
-    when "CNAME"
+    when 'CNAME'
       #nsupdate "zone #{forward_domain}"
       nsupdate "update add #{fqdn}. #{ttl} #{type} #{value}."
-    when "PTR"
+    when 'PTR'
       reverse_ip_array = fqdn.split(".").reverse
       ptr_record = reverse_ip_array.join(".") + ".IN-ADDR.ARPA"
-      reverse_ip_array.shift # Remove first octet 
+      reverse_ip_array.shift # Remove first octet
       cnet_domain = reverse_ip_array.join(".") + ".IN-ADDR.ARPA"
       nsupdate "zone #{cnet_domain}"
       nsupdate "update add #{ptr_record}. #{ttl} #{type} #{value}."
-    when "NS"
+    when 'NS'
       nsupdate "zone #{fqdn}"
       nsupdate "update add #{fqdn} 0 IN #{type} #{value}"
-    when "MX"
+    when 'MX'
       #nsupdate "zone #{forward_domain}"
       nsupdate "update add #{fqdn} #{ttl} #{type} #{priority} #{value}."
     end
-    nsupdate "disconnect"
+    nsupdate 'disconnect'
   ensure
     @om.close unless @om.nil? or @om.closed?
   end
 
   # remove({ :fqdn => "node01.lab", :value => "192.168.100.2"}
   def remove
-    nsupdate "connect"
+    nsupdate 'connect'
     case @type
-    when "A"
+    when 'A'
       nsupdate "update delete #{@fqdn} #{@type}"
-    when "PTR"
+    when 'PTR'
       nsupdate "update delete #{@value} #{@type}"
     end
-    nsupdate "disconnect"
+    nsupdate 'disconnect'
   end
 
   protected
 
   def nsupdate_args
-    args = ""
+    args = ''
     args = "-k #{@dns_key} " if @dns_key
     args
   end
 
   def nsupdate cmd
     status = nil
-    if cmd == "connect"
+    if cmd == 'connect'
       find_nsupdate if @nsupdate.nil?
       nsupdate_cmd = "#{@nsupdate} #{nsupdate_args}"
       #      logger.debug "running #{nsupdate_cmd}"
@@ -74,9 +74,9 @@ class Nsupdate
       #      logger.debug "nsupdate: executed - server #{@server}"
       STDOUT.write "nsupdate: executed - server #{@server}\n"
       @om.puts "server #{@server}"
-    elsif cmd == "disconnect"
-      @om.puts "send"
-      @om.puts "answer"
+    elsif cmd == 'disconnect'
+      @om.puts 'send'
+      @om.puts 'answer'
       @om.close_write
       status = @om.readlines
       @om.close
@@ -97,10 +97,10 @@ class Nsupdate
   private
 
   def find_nsupdate
-    @nsupdate = which("nsupdate")
+    @nsupdate = which('nsupdate')
     unless File.exists?("#{@nsupdate}")
       #      logger.warn "unable to find nsupdate binary, maybe missing bind-utils package?"
-      raise "unable to find nsupdate binary"
+      raise 'unable to find nsupdate binary'
     end
   end
 
