@@ -118,27 +118,33 @@ define bind::zone (
     $zone_serial = inline_template('<%= Time.now.to_i %>')
 
     exec { "bump-${zone}-serial":
-      command     => "sed 's/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}",
+      command     => "sed 's/_SERIAL_/${zone_serial}/' ${zone_file_stage} > ${zone_file}; echo '' >> ${zone_file}",
       path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
       refreshonly => true,
       provider    => posix,
       user        => $::bind::config_file_owner,
       group       => $::bind::config_file_group,
       require     => Package[$::bind::package],
-      notify      => [Service[$::bind::servicename], [Exec["named-checkzone-${zone}"]]],
+      notify      => Service[$::bind::servicename],
     }
 
-    exec { "named-checkzone-${zone}":
-      command     => "/usr/sbin/named-checkzone ${name} ${zone_file}",
-      refreshonly => true,
-      logoutput   => true,
-      require     => Exec["bump-${zone}-serial"],
+    if $zone_type == 'master' {
+      # Slave use faster binary format for zones by default since Bind 9.9
+	    Exec <| title == "bump-${zone}-serial" |> {
+	      notify +> Exec["named-checkzone-${zone}"],
+	    }
+
+	    exec { "named-checkzone-${zone}":
+	      command     => "/usr/sbin/named-checkzone ${name} ${zone_file}",
+	      refreshonly => true,
+	      logoutput   => true,
+	      require     => Exec["bump-${zone}-serial"],
+	    }
     }
   }
 
   # Include Zone in named.conf.local
   concat::fragment { "named.conf.local.${name}.include":
-    ensure  => $ensure,
     target  => "${::bind::config_dir}/named.conf.local",
     order   => 3,
     content => template("${module_name}/zone.erb"),

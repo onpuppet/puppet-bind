@@ -7,7 +7,7 @@ zone "<%= @zone %>" {
   file "<%= @zone_file %>";
   masters {<% @slave_masters.each do |ip| -%> <%= ip %>; <% end -%>};
   <% if @allow_update_forwarding -%>
-  allow-update-forwarding { <% @allow_update_forwarding.each do |key| -%> key <%= key %>; <% end -%> };
+  allow-update-forwarding {<% @allow_update_forwarding.each do |key| -%> key <%= key %>; <% end -%>};
   <% end -%>
 <% elsif @zone_type == 'master' -%>
   file "<%= @zone_file %>";
@@ -16,8 +16,8 @@ zone "<%= @zone %>" {
   <% end -%>
   <% if @allow_transfer -%>
   allow-transfer {<% @allow_transfer.each do |ip| -%> <%= ip %>; <% end -%>};
-  <% end -%> 
-<% elsif @zone_type == 'forward' -%>  
+  <% end -%>
+<% elsif @zone_type == 'forward' -%>
   <% if !@allow_forwarder.empty? -%>
   forward <%= @forward_policy %>;
   forwarders {<% @allow_forwarder.each do |ip| -%> <%= ip %>; <% end -%>};

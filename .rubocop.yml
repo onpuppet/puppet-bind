@@ -508,6 +508,9 @@ RSpec/DescribeClass:
 RSpec/ExampleLength:
   Enabled: False
 
+RSpec/InstanceVariable:
+  Enabled: False
+
 RSpec/NamedSubject:
   Enabled: False
 
