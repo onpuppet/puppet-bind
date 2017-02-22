@@ -1,27 +1,36 @@
----
-sudo: false
 language: ruby
-bundler_args: --without system_tests
-script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
+sudo: true
+cache: bundler
+bundler_args: "--without development"
+before_install: rm Gemfile.lock || true
+script:
+- bundle exec rake $CHECK
 matrix:
   fast_finish: true
   include:
-  - rvm: 1.8.7
-    env: PUPPET_GEM_VERSION="~> 3.0"
-  - rvm: 1.9.3
-    env: PUPPET_GEM_VERSION="~> 3.0"
-  - rvm: 2.1.5
-    env: PUPPET_GEM_VERSION="~> 3.0"
-  - rvm: 2.1.5
-    env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
-  - rvm: 2.1.6
-    env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES="yes"
-  - rvm: 1.8.7
-    env: PUPPET_GEM_VERSION="~> 2.7.0" FACTER_GEM_VERSION="~> 1.6.0"
-  - rvm: 1.8.7
-    env: PUPPET_GEM_VERSION="~> 2.7.0" FACTER_GEM_VERSION="~> 1.7.0"
-  allow_failures:
-    - rvm: 2.1.6
-      env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES="yes"
+  - rvm: 2.1.9
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.2.5
+    env: PUPPET_VERSION="~> 4.0" CHECK=test
+  - rvm: 2.3.1
+    env: PUPPET_VERSION="~> 4.0" CHECK=rubocop
+  - rvm: 2.3.1
+    env: PUPPET_VERSION="~> 4.0" CHECK=test DEPLOY_TO_FORGE=yes
+  - rvm: 2.3.1
+    sudo: required
+    dist: trusty
+    services: docker
+    env: BEAKER_set="ubuntu-1404-x64"
+    bundler_args: 
+    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
 notifications:
-  email: false
+  email: true
+deploy:
+  provider: puppetforge
+  user: onpuppet
+  password:
+    secure: cEzCNYSag4V0xtS4DVWPoVlZiN+0W7imZ/uoaPMXOy82LSXvI3KSWe3sqMKE/gsz/zamkWekfhSVJ+E2DptHqojjfShe3KQA8xLmIpFGTpg9Hm5HZIidYMrWI4lQgAE5e7cgIB6t5Lmu6Fs7jKNOAbF0R4THPaAJeYyjV26rJg6oHrxK8N5gsiR8KHWBClGpKwZrWXIryXqwhi60wjK57R/E2JUaxq4RlRTyQpbcEZ3fgZl7TJZFPt5XX8HJVz9yFDzQtpHKxkJ3s9MAChICNgoh3PZBybkdNrD28quwuNMcmJ1SppICBi9zl9nMJFJDWlxNJo0g5xNhEe0ydoTMtO/Yh9VstoyvDTT98vdozrvUc+f22M4N/d+MT4LFAHOtBfRE3rQwRGwaCa3malj+eH4Np5hYuCrOFkZGvKeISHrfscbs1TKcNQiIITMEK5glZ6RLGrrDqnRNwM84u1MKX2YAG8IAbswBz1gz3iJO9k+yQZQi2ERFEXhC4Iwv2C42hhb8j+3f1bEoU/QwsrXp2nvO8s9FptuE+6p4jAApPg4dHtuf1zdESVYF62d8OKieItpZ4B17lr8bkgsI76TSKFCMoqEbsHpYyH+VuwHmAJkvKTkwGDW+7+6qIWuycqF6dX7aLOiZVbLXniYcPrFPMXSxoaH8EzpWLscNNsLrFSU=
+  on:
+    tags: true
+    all_branches: true
+    condition: "$DEPLOY_TO_FORGE = yes"
