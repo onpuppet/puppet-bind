@@ -1,5 +1,7 @@
 # puppet-bind
 
+[![Build Status](https://travis-ci.org/onpuppet/puppet-bind.png?branch=master)](https://travis-ci.org/onpuppet/puppet-bind)
+
 ## Overview
   
 Install and enable a BIND DNS server, manage its main configuration and install
