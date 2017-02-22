@@ -130,16 +130,16 @@ define bind::zone (
 
     if $zone_type == 'master' {
       # Slave use faster binary format for zones by default since Bind 9.9
-	    Exec <| title == "bump-${zone}-serial" |> {
-	      notify +> Exec["named-checkzone-${zone}"],
-	    }
+      Exec <| title == "bump-${zone}-serial" |> {
+        notify +> Exec["named-checkzone-${zone}"],
+      }
 
-	    exec { "named-checkzone-${zone}":
-	      command     => "/usr/sbin/named-checkzone ${name} ${zone_file}",
-	      refreshonly => true,
-	      logoutput   => true,
-	      require     => Exec["bump-${zone}-serial"],
-	    }
+      exec { "named-checkzone-${zone}":
+        command     => "/usr/sbin/named-checkzone ${name} ${zone_file}",
+        refreshonly => true,
+        logoutput   => true,
+        require     => Exec["bump-${zone}-serial"],
+      }
     }
   }
 
