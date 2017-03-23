@@ -104,5 +104,6 @@ class bind::params {
   $inet = '127.0.0.1'
   $inet_port = '953'
   $allow_notify = []
+  $max_ncache_ttl = undef
 
 }

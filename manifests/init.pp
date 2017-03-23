@@ -156,6 +156,7 @@ class bind (
   $inet_port              = $bind::params::inet_port,
   $bindkey_file           = $bind::params::bindkey_file,
   $allow_notify           = $bind::params::allow_notify,
+  $max_ncache_ttl         = $bind::params::max_ncache_ttl,
 ) inherits bind::params {
 
   validate_string($server_id)
