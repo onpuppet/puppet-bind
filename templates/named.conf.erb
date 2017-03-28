@@ -77,7 +77,7 @@ options {
 <% end -%>
 <% end -%>
 <% if scope['bind::max_ncache_ttl'] -%>
-    max-ncache-ttl "<%= scope['bind::max_ncache_ttl'] %>";
+    max-ncache-ttl <%= scope['bind::max_ncache_ttl'] %>;
 <% end -%>
 
 <% if !scope['bind::extra_options'].nil? and !scope['bind::extra_options'].empty? -%>
