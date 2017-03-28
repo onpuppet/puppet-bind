@@ -1,7 +1,7 @@
 require 'beaker-rspec'
 require 'beaker/puppet_install_helper'
 
-run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
+install_puppet_agent_on hosts, {} unless ENV['BEAKER_provision'] == 'no'
 
 RSpec.configure do |c|
   # Project root
