@@ -120,6 +120,8 @@ logging {
     };
 };
 
+include "<%= scope['bind::config_dir'] -%>/named.conf.keys";
+
 <% if !scope['bind::controls'].nil? and !scope['bind::controls'].empty? -%>
 include "/etc/bind/rndc.key";
 

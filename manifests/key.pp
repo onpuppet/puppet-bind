@@ -38,7 +38,7 @@ define bind::key ($secret, $ensure = present, $algorithm = 'hmac-md5',) {
 
   concat::fragment { "dnskey.${name}":
     ensure  => $ensure,
-    target  => "${bind::config_dir}/named.conf.local",
+    target  => "${bind::config_dir}/named.conf.keys",
     content => "include \"${bind::params::config_dir}/${name}\";\n",
     notify  => Service[$::bind::servicename],
     require => Package[$::bind::package],

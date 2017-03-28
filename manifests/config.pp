@@ -48,6 +48,14 @@ class bind::config {
     content => "// File managed by Puppet.\n",
   }
 
+  concat { "${bind::config_dir}/named.conf.keys":
+    require => [Package[$bind::package]],
+    owner   => $bind::config_file_owner,
+    group   => $bind::config_file_group,
+    mode    => $bind::config_file_mode,
+    notify  => Exec['named-checkconf'],
+  }
+
   # Zones
   file { $bind::data_dir:
     ensure => 'directory',
