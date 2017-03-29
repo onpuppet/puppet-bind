@@ -15,6 +15,8 @@
 #
 # === Parameters
 #
+# [*ensure*]
+#   Ensure keyword for zone file
 # [*soa*]
 #   SOA for zone
 # [*soa_email*]
@@ -49,10 +51,11 @@
 #   Array of slaves for zone
 # [*zone_notify*]
 #   Allow zone notify
-# [*ensure*]
-#   Ensure keyword for zone file
+# [*view_name*]
+#   If set, the zone declaration is put in a separate named.conf.view file
 #
 define bind::zone (
+  $ensure                  = present,
   $soa                     = $::fqdn,
   $soa_email               = "root.${::fqdn}",
   $zone_ttl                = '1800',
@@ -70,7 +73,7 @@ define bind::zone (
   $allow_update_forwarding = [],
   $slave_masters           = [],
   $zone_notify             = false,
-  $ensure                  = present,
+  $view_name               = undef,
 ) {
   validate_array($allow_transfer)
   validate_array($allow_forwarder)
@@ -143,9 +146,23 @@ define bind::zone (
     }
   }
 
-  # Include Zone in named.conf.local
+  # Include Zone in named.conf.local or name.conf.view.${view_name}
+  $concat_target = $view_name ? {
+    undef   => "${::bind::config_dir}/named.conf.local",
+    default => "${::bind::config_dir}/named.conf.view.${view_name}",
+  }
+
+  if !defined(Concat[$concat_target]) {
+    concat { $concat_target:
+      require => [Package[$bind::package]],
+      owner   => $bind::config_file_owner,
+      group   => $bind::config_file_group,
+      mode    => $bind::config_file_mode,
+    }
+  }
+
   concat::fragment { "named.conf.local.${name}.include":
-    target  => "${::bind::config_dir}/named.conf.local",
+    target  => $concat_target,
     order   => 3,
     content => template("${module_name}/zone.erb"),
     require => Package[$::bind::package],
