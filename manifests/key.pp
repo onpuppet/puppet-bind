@@ -36,12 +36,13 @@ define bind::key ($secret, $ensure = present, $algorithm = 'hmac-md5',) {
     require => Package[$::bind::package],
   }
 
-  concat::fragment { "dnskey.${name}":
-    ensure  => $ensure,
-    target  => "${bind::config_dir}/named.conf.keys",
-    content => "include \"${bind::params::config_dir}/${name}\";\n",
-    notify  => Service[$::bind::servicename],
-    require => Package[$::bind::package],
+  if $ensure == 'present' {
+    concat::fragment { "dnskey.${name}":
+      target  => "${bind::config_dir}/named.conf.keys",
+      content => "include \"${bind::params::config_dir}/${name}\";\n",
+      notify  => Service[$::bind::servicename],
+      require => Package[$::bind::package],
+    }
   }
 
 }
