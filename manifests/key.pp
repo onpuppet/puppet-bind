@@ -34,6 +34,7 @@ define bind::key ($secret, $ensure = present, $algorithm = 'hmac-md5',) {
     group   => $bind::params::config_file_group,
     content => template("${module_name}/dnskey.conf.erb"),
     require => Package[$::bind::package],
+    before  => File[$bind::config_file],
   }
 
   if $ensure == 'present' {
